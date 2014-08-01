@@ -1,0 +1,47 @@
+# Converts old ssh-keygen keys into new format
+# Old key passwords are hashed with MD5. PKCS8 uses PBKDF2/PBES2.
+if (( $+commands[openssl] )); then
+	function ssh-convert-privkey-to-pkcs8 {
+		local original_key="$1"
+		# Offer a list of keys from the users .ssh directory if one
+		# wasn't provided.
+		local key
+		if [[ -z "${original_key}" ]]; then
+			select key in ${HOME}/.ssh/*.pub(:r); do
+				original_key=$key
+				break
+			done
+		fi
+
+		# If the filename we were provided with exists, we're good to
+		# go.
+		if [[ -f "${original_key}" ]]; then
+			# Create a temporary file to store the converted key.
+			local new_key=$(mktemp)
+
+			# Perform the conversion
+			openssl pkcs8 -topk8 -v2 aes-256-cbc \
+				-in "${original_key}" \
+				-out "${new_key}"
+
+			# If the conversion went ok, then replace the original
+			# key with the new key and make a backup of the
+			# original with .pre-pkcs8 suffix.
+			if [[ $? == 0 ]]; then
+				mv -b -S ".pre-pkcs8" \
+					"${new_key}" \
+					"${original_key}"
+			else
+				# Notify and cleanup.
+				print -u 2 "PKCS8 conversion failed."
+				if [[ -f "${new_key}" ]]; then
+					rm "${new_key}"
+				fi
+				return 1
+			fi
+		else
+			print -u 2 "Couldn't find '${original_key}'"
+			return 1
+		fi
+	}
+fi
