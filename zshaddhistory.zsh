@@ -4,8 +4,8 @@ autoload -Uz add-zsh-hook
 # HISTIGNORE is set in 000-environment.zsh
 function _zshaddhistory_ignore_command {
 	emulate -L zsh
-	local line=${1%%$'\n'}
-	local cmd=${line%% *}
+	local -r line=${1%%$'\n'}
+	local -r cmd=${line%% *}
 
 	if (( $+histignore[(r)${cmd}] )); then
 		return 1
