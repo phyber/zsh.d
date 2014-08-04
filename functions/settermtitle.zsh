@@ -10,12 +10,12 @@ function settermtitle {
 }
 
 # Sets the title while sitting at the command prompt.
-function _stt_precmd {
+function _settermtitle_precmd {
 	settermtitle "${HOST%%.*}"
 }
 
 # Set the terminal title before executing a command
-function _stt_preexec {
+function _settermtitle_preexec {
 	local -r user_cmd="$1"
 	local -r expanded_truncated_cmd="$2"
 	local -r expanded_full_cmd="$3"
@@ -25,5 +25,5 @@ function _stt_preexec {
 }
 
 # Hook above functions into 'precmd' and 'preexec'
-add-zsh-hook precmd _stt_precmd
-add-zsh-hook preexec _stt_preexec
+add-zsh-hook precmd _settermtitle_precmd
+add-zsh-hook preexec _settermtitle_preexec
