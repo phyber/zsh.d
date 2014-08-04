@@ -12,12 +12,14 @@ if (( $+commands[openssl] )); then
 				break
 			done
 		fi
+		unset key		# Not needed past here.
+		readonly original_key	# Shouldn't change now.
 
 		# If the filename we were provided with exists, we're good to
 		# go.
 		if [[ -f "${original_key}" ]]; then
 			# Create a temporary file to store the converted key.
-			local new_key=$(mktemp)
+			local -r new_key=$(mktemp)
 
 			# Perform the conversion
 			openssl pkcs8 -topk8 -v2 aes-256-cbc \
