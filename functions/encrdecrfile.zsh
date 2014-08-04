@@ -12,6 +12,7 @@ if (( $+commands[openssl] )); then
 			fnameout=$(mktemp)
 		fi
 		readonly fnameout
+		readonly inplace
 
 		if [[ -z "${fnamein}" ]]; then
 			print "Usage: $0 <in file> [out file]"
