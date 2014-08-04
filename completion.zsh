@@ -14,7 +14,9 @@ zstyle ':completion:*:(all-|)files' ignored-patterns \
 
 # Completion ignores for vim
 zstyle ':completion:*:complete:vim:*' ignored-patterns \
-	'*\~' '(|*/)(.git|.svn|CVS)' '*.pyc' '*.o' '*.swp'
+	'*\~' \
+	'(|*/)(.git|.svn|CVS)' \
+	'*.pyc' '*.o'
 
 # Completion ignores for commands (files marked executable)
 zstyle ':completion:*:complete:-command-:*' ignored-patterns \
@@ -25,6 +27,7 @@ zstyle ':completion:*:-command-:*:' verbose false
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # Colours during tab completion
+# (s.:.) splits at the : during parameter expansion.
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # Menu for completions
