@@ -44,7 +44,11 @@ function _dreport_mail {
 }
 
 function dreport {
-	local -r dreport_dir="${HOME}/Docs/Reports"
+	if [[ -z "${DREPORT_DIR}" ]]; then
+		print -u 2 "DREPORT_DIR environment variable not set."
+		return 1
+	fi
+
 	local -a editors
 	editors=('vim' 'nano' 'pico' 'emacs')
 	typeset -r editors
@@ -93,7 +97,7 @@ function dreport {
 
 	# File location and name.
 	local -r week=$(strftime "%W" $now)
-	local -r week_dir="${dreport_dir}/${week}"
+	local -r week_dir="${DREPORT_DIR}/${week}"
 	local -r datestamp=$(strftime "%Y%m%d" $now)
 	local -r filename="${datestamp}.txt"
 	local -r dreport_txt="${week_dir}/${filename}"

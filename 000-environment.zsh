@@ -8,6 +8,7 @@ RLWRAP_BINS=(bc)
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
+DREPORT_DIR="${HOME}/Docs/Reports"
 export EDITOR==vim
 export GREP_OPTIONS='--color'
 export KEYCHAIN_TIMEOUT_MINS=$((8 * 60))	# 8 hour timeout for keychain.
