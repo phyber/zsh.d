@@ -44,7 +44,7 @@ function _dreport_mail {
 }
 
 function _dreport_grep {
-	grep -r $@ "${DREPORT_DIR}"
+	grep -r --include="*.txt" $@ "${DREPORT_DIR}"
 	return $?
 }
 
