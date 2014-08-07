@@ -43,10 +43,22 @@ function _dreport_mail {
 	return $?
 }
 
+function _dreport_grep {
+	grep -r $@ "${DREPORT_DIR}"
+	return $?
+}
+
 function dreport {
 	if [[ -z "${DREPORT_DIR}" ]]; then
 		print -u 2 "DREPORT_DIR environment variable not set."
 		return 1
+	fi
+
+	# Special handling for grep argument.
+	if [[ $1 == "grep" ]]; then
+		shift
+		_dreport_grep $@
+		return $?
 	fi
 
 	local -a editors
