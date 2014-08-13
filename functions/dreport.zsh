@@ -155,5 +155,17 @@ function dreport {
 	fi
 
 	${EDITOR} "${dreport_txt}"
-	return $?
+
+	# Offer to mail report right away.
+	local PROMPT3="Send report via email?: "
+	local answer
+	select answer in Yes No; do
+		if [ "${answer}" = "Yes" ]; then
+			dreport -m
+			return $?
+		fi
+		break
+	done
+
+	return 0
 }
