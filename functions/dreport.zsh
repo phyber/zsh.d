@@ -161,7 +161,7 @@ function dreport {
 	local answer
 	select answer in Yes No; do
 		if [ "${answer}" = "Yes" ]; then
-			dreport -m
+			dreport -m ${o_yesterday}
 			return $?
 		fi
 		break
