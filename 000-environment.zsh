@@ -3,7 +3,10 @@
 HISTIGNORE='man:run-help'
 typeset -T HISTIGNORE histignore # Tied array for easily checking HISTIGNORE
 
-LS_OPTIONS='-F --group-directories-first'
+# BSD ls is different.
+if [[ $OSTYPE == linux* ]]; then
+	LS_OPTIONS='-F --group-directories-first'
+fi
 RLWRAP_BINS=(bc)
 
 export PATH="${HOME}/.local/bin:${PATH}"
