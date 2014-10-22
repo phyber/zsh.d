@@ -18,9 +18,10 @@ zstyle ':completion:*:complete:vim:*' ignored-patterns \
 	'(|*/)(.git|.svn|CVS)' \
 	'*.pyc' '*.o'
 
+# Ignore executable files when completing for vim.
+#zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*(*)'
 # Completion ignores for commands (files marked executable)
-zstyle ':completion:*:complete:-command-:*' ignored-patterns \
-	'*\~'
+zstyle ':completion:*:complete:-command-:*' ignored-patterns '*\~'
 zstyle ':completion:*:-command-:*:' verbose false
 
 # Don't tab complete zsh _* functions
