@@ -9,7 +9,7 @@ case "$OSTYPE" in
 		LS_OPTIONS='-F --group-directories-first'
 		;;
 	*bsd*)
-		CLICOLOR=1
+		export CLICOLOR=1
 		LS_OPTIONS='-F'
 		;;
 	*)
