@@ -1,4 +1,4 @@
-# Load SSH keychain with all keys found in ~/.ssh
+# Load SSH keychain with all keys found in ~/.ssh if keychain command exists.
 if (( $+commands[keychain] )); then
 	function {
 		local -r keychain_file="${HOME}/.keychain/${HOST}-sh"
