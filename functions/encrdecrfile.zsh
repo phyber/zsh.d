@@ -1,3 +1,4 @@
+return 0
 if (( $+commands[openssl] )); then
 	# Encrypt/decrypt files with openssl
 	# Shouldn't be used at all and was just for testing various bits of
