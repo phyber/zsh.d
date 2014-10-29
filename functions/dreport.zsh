@@ -5,7 +5,7 @@
 zmodload -aF zsh/datetime b:strftime p:EPOCHSECONDS
 
 function _dreport_mail {
-	local mutt=$(whence mutt)
+	local mutt==mutt 2>/dev/null
 	if [[ $? != 0 ]]; then
 		print -u 2 "mutt not found."
 		return 1
