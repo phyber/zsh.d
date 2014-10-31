@@ -159,12 +159,23 @@ function dreport {
 	# Offer to mail report right away.
 	local PROMPT3="Send report via email?: "
 	local answer
+	local REPLY
 	select answer in Yes No; do
-		if [ "${answer}" = "Yes" ]; then
-			dreport -m ${o_yesterday}
-			return $?
+		if [[ -z "$answer" ]]; then
+			answer="$REPLY"
 		fi
-		break
+		case "$answer" in
+			[Yy]es|[Yy])
+				dreport -m ${o_yesterday}
+				return $?
+				;;
+			[Nn]o|[Nn])
+				return 0
+				;;
+			*)
+				echo "Invalid choice."
+				;;
+		esac
 	done
 
 	return 0
