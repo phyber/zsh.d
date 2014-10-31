@@ -140,7 +140,7 @@ function dreport {
 	# If no $EDITOR is found, try to use a sensible one.
 	if [ -z "${EDITOR}" ]; then
 		for i in ${editors}; do
-			editor=$(whence -p ${i})
+			editor==${i}
 			if [[ $? == 0 ]]; then
 				EDITOR="${editor}"
 				break
