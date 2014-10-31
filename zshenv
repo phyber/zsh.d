@@ -14,11 +14,12 @@ PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)%{$fg_bold[green]%}%n@%m%{$reset_c
 PROMPT3='%{$fg[yellow]%}Selection%{$reset_color%}: '
 RPROMPT='%{$fg_bold[blue]%}%~%{$reset_color%}$vi_key_mode'
 
+typeset -U PATH # Ensure that each entry in PATH is unique
+export PATH="${HOME}/.local/bin:${PATH}"
+
 # Pager for the null command. READNULLCMD gets trashed on Debian by
 # /etc/zsh/zshrc which is read later. So we must set READNULLCMD through
 # PAGER which is used in /etc/zsh/zshrc
 PAGER==most
 PAGER=${PAGER:-=less}
 READNULLCMD="${PAGER}"
-
-typeset -U PATH # Ensure that each entry in PATH is unique
