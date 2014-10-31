@@ -48,6 +48,13 @@ function _dreport_grep {
 	return $?
 }
 
+function _dreport_usage {
+	local -r me="$1"
+	echo "Usage:  $me help - This help text"
+	echo "        $me grep [options] text - Search through dreports."
+	return 1
+}
+
 function dreport {
 	if [[ -z "${DREPORT_DIR}" ]]; then
 		print -u 2 "DREPORT_DIR environment variable not set."
@@ -55,11 +62,17 @@ function dreport {
 	fi
 
 	# Special handling for grep argument.
-	if [[ $1 == "grep" ]]; then
-		shift
-		_dreport_grep $@
-		return $?
-	fi
+	case "$1" in
+		grep)
+			shift
+			_dreport_grep $@
+			return $?
+			;;
+		help)
+			_dreport_usage $0
+			return $?
+			;;
+	esac
 
 	local -a editors
 	editors=('vim' 'nano' 'pico' 'emacs')
