@@ -5,7 +5,7 @@ function settermtitle {
 	# FIXME: Shouldn't do this if term doesn't support it.
 	if [[ $TERM != "linux" ]]; then
 		local -r title="$1"
-		printf '\033]2;%s\033\\' "${title}"
+		print -u 2 -n -f '\033]2;%s\033\\' "${title}"
 	fi
 }
 
