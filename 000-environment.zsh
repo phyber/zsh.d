@@ -18,6 +18,10 @@ esac
 RLWRAP_BINS=(bc)
 
 DREPORT_DIR="${HOME}/Docs/Reports"
+
+# Setting this to 'vi' enables vi keybinds, anything else results in emacs.
+ZSHD_KEYMAP="emacs"
+
 export EDITOR==vim
 export GREP_OPTIONS='--color'
 export LC_COLLATE='C'
