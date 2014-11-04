@@ -29,6 +29,7 @@ export LC_COLLATE='C'
 # Hide disclaimers in whois where possible.
 export WHOIS_OPTIONS='-H'
 
+# Enable lesspipe if it is present.
 if (( $+commands[lesspipe] )); then
 	eval $(lesspipe)
 fi

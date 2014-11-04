@@ -37,3 +37,16 @@ if [[ ${$(bindkey -lL main):2:1} == 'viins' ]]; then
 	bindkey -M viins "\eOA" up-line-or-history
 	bindkey -M viins "\eOB" down-line-or-history
 fi
+
+# Adds a space after the command line when browsing up/down in history.
+#function space-after-up-line-or-history {
+#	# Call original
+#	zle _zshrc_original_up-line-or-history
+#	#zle .up-line-or-history
+#	if [[ "${BUFFER[-1]}" != ' ' ]]; then
+#		RBUFFER+=" "
+#		zle end-of-line
+#	fi
+#}
+#zle -A up-line-or-history _zshrc_original_up-line-or-history
+#zle -N up-line-or-history space-after-up-line-or-history

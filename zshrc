@@ -53,19 +53,6 @@ setopt BSD_ECHO			# More standard echo
 # ZLE
 setopt NO_BEEP			# No beeping on errors
 
-# Adds a space after the command line when browsing up/down in history.
-#function space-after-up-line-or-history {
-#	# Call original
-#	zle _zshrc_original_up-line-or-history
-#	#zle .up-line-or-history
-#	if [[ "${BUFFER[-1]}" != ' ' ]]; then
-#		RBUFFER+=" "
-#		zle end-of-line
-#	fi
-#}
-#zle -A up-line-or-history _zshrc_original_up-line-or-history
-#zle -N up-line-or-history space-after-up-line-or-history
-
 # Load broken-out configuration.
 if [[ -d "${HOME}/.zsh.d" ]]; then
 	# Find all readable .zsh files under ~/.zsh.d
