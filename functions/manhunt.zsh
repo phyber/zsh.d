@@ -16,8 +16,8 @@ if (( $+commands[man] && $+commands[whatis] )); then
 			# :t -> basename
 			# :r -> remove extension
 			# :e -> remove parts before extension.
-			local -r section="${manpage:t:r:e}"
-			local -r pagename="${manpage:t:r:r}"
+			local section="${manpage:t:r:e}"
+			local pagename="${manpage:t:r:r}"
 			whatis -s "${section}" "${pagename}"
 
 			# Add this manpage to our list of already seen
