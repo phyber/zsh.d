@@ -29,10 +29,10 @@ function ptrhost {
 
 	# :r removes the last octet from $ip since it isn't needed.
 	local -a octet
-	octet=("${(s/./)ip:r}")
+	octet=("${(s/./)ip}")
 
 	# Make sure that we have 3 components in the octet array.
-	if [[ ${#octet} != 3 ]]; then
+	if [[ ${#octet} -lt 3 || ${#octet} -gt 4 ]]; then
 		print -u 2 "Invalid argument: '${ip}'"
 		return 1
 	fi
