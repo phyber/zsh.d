@@ -21,6 +21,11 @@ function _ptrhost_find_command {
 function ptrhost {
 	# :r removes the last octet, since it isn't needed.
 	local -r ip="${1:r}"
+	if [[ -z "${ip}" ]]; then
+		print -u 2 "Usage: $0 IP-ADDRESS"
+		return 1
+	fi
+
 	local -a octet
 	octet=("${(s/./)ip}")
 	local -r lookup="${octet[3]}.${octet[2]}.${octet[1]}.in-addr.arpa"
