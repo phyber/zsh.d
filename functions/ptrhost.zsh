@@ -1,5 +1,6 @@
 # ptrhost looks up the nameserver responsible for providing PTR records for a
 # given IP address. It requires either the dig or host command.
+# Currently only supports IPv4
 
 # _ptrhost_find_command finds the first available DNS tool and returns its
 # path.
