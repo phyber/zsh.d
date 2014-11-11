@@ -13,7 +13,8 @@ if (( $+commands[keychain] )); then
 		keychain --quiet \
 			--nogui \
 			$timeout \
-			--host "${HOST}" ${HOME}/.ssh/*.pub(:r)
+			--host "${HOST}" \
+			${HOME}/.ssh/*.pub(:r)
 
 		if [[ -f ${keychain_file} ]]; then
 			source ${keychain_file}
