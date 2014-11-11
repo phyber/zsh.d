@@ -13,14 +13,16 @@ compctl -K _pip_completion pip
 
 # This makes pip install in usermode outside of virtualenvs but doesn't touch
 # the options inside a virtualenv.
-function pip {
-	if [[ -n "${VIRTUAL_ENV}" ]]; then
-		# If inside a virtual env, execute pip normally.
-		command pip $@
-	else
-		# Install things to user location by default.
-		PIP_USER=1 command pip $@
-	fi
+if (( $+commands[pip] )) {
+	function pip {
+		if [[ -n "${VIRTUAL_ENV}" ]]; then
+			# If inside a virtual env, execute pip normally.
+			command pip $@
+		else
+			# Install things to user location by default.
+			PIP_USER=1 command pip $@
+		fi
+	}
 }
 
 if (( $+commands[bpython] )); then
