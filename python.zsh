@@ -13,6 +13,8 @@ compctl -K _pip_completion pip
 
 # This makes pip install in usermode outside of virtualenvs but doesn't touch
 # the options inside a virtualenv.
+# Implemented because: Why would pip try to install things globally when
+# running as a normal user?!
 function {
 	local -a pipcmds
 	local cmd
