@@ -16,6 +16,7 @@ compctl -K _pip_completion pip
 # Implemented because: Why would pip try to install things globally when
 # running as a normal user?!
 function {
+	# Finds valid pip commands and adds them to pipcmds array.
 	local -a pipcmds
 	local cmd
 	for cmd ("pip" "pip2" "pip3") {
