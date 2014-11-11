@@ -1,3 +1,5 @@
+# Python related doodads.
+
 # pip zsh completion start
 function _pip_completion {
 	local words cword
