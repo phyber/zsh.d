@@ -24,10 +24,6 @@ if (( $+commands[pinfo] )); then
 	alias info='pinfo'
 fi
 
-if (( $+commands[bpython] )); then
-	alias bpython='bpython -q'
-fi
-
 # Docker is docker.io on Debian, alias it back to docker.
 if (( $+commands[docker.io] )); then
 	alias docker='docker.io'

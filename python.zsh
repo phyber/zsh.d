@@ -22,3 +22,7 @@ function pip {
 		PIP_USER=1 command pip $@
 	fi
 }
+
+if (( $+commands[bpython] )); then
+	alias bpython='bpython -q'
+fi
