@@ -4,10 +4,16 @@ autoload -Uz vcs_info
 
 # Enable VCS Info for git and mercurial.
 zstyle ':vcs_info:*' enable git hg
+
+# Git options
 zstyle ':vcs_info:git*' get-revision true
 zstyle ':vcs_info:git*' check-for-changes true
 zstyle ':vcs_info:git*+set-message:*' hooks \
-	git-stash git-square-bracket git-untracked
+	git-stash \
+	git-square-bracket \
+	git-untracked
+
+# vcs_info output style.
 zstyle ':vcs_info:*' formats \
 	":%{$fg_bold[grey]%}%m%u%c[%s:%b]%{$reset_color%}"
 zstyle ':vcs_info:*' actionformats \
