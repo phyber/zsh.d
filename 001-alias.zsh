@@ -33,9 +33,9 @@ fi
 function {
 	if (( $+commands[rlwrap] )); then
 		local bin
-		for bin in $RLWRAP_BINS; do
+		for bin ($RLWRAP_BINS) {
 			alias ${bin}="rlwrap -H ${HOME}/.${bin}_history ${bin}"
-		done
+		}
 	fi
 }
 
