@@ -24,7 +24,7 @@ if (( $+commands[pinfo] )); then
 	alias info='pinfo'
 fi
 
-# Docker is docker.io on Debian, alias it back to docker.
+# Docker is docker.io in older versions of Debian, alias it back to docker.
 if (( $+commands[docker.io] )); then
 	alias docker='docker.io'
 fi
