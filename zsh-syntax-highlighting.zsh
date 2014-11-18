@@ -1,11 +1,9 @@
 # Syntax highlighting
 ZSH_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 
-if [[ -x "${ZSH_SYNTAX_HIGHLIGHT_DIR}" && \
-	-f "${ZSH_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" ]]; then
-
-	source "${ZSH_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh"
-
+if source \
+	"${ZSH_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" \
+	>/dev/null 2>&1; then
 	# Can't modify this in .zshenv since we haven't loaded syntax
 	# highlighting at that time.
 	if [[ -n $ZSH_HIGHLIGHT_STYLES ]]; then
