@@ -23,7 +23,9 @@ DREPORT_DIR="${HOME}/Docs/Reports"
 ZSHD_KEYMAP="emacs"
 
 # Sometimes we might not have vim installed. Redirect error output.
-export EDITOR==vim 2>/dev/null
+if (( $+commands[vim] )); then
+	export EDITOR==vim
+fi
 export GREP_OPTIONS='--color'
 export LC_COLLATE='C'
 
