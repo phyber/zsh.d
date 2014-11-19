@@ -20,6 +20,6 @@ export PATH="${HOME}/.local/bin:${PATH}"
 # Pager for the null command. READNULLCMD gets trashed on Debian by
 # /etc/zsh/zshrc which is read later. So we must set READNULLCMD through
 # PAGER which is used in /etc/zsh/zshrc
-PAGER==most
+PAGER==most 2>/dev/null
 PAGER=${PAGER:-=less}
 READNULLCMD="${PAGER}"

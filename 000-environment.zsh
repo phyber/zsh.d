@@ -22,7 +22,8 @@ DREPORT_DIR="${HOME}/Docs/Reports"
 # Setting this to 'vi' enables vi keybinds, anything else results in emacs.
 ZSHD_KEYMAP="emacs"
 
-export EDITOR==vim
+# Sometimes we might not have vim installed. Redirect error output.
+export EDITOR==vim 2>/dev/null
 export GREP_OPTIONS='--color'
 export LC_COLLATE='C'
 
