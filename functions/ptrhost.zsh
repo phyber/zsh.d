@@ -9,6 +9,7 @@ function _ptrhost_find_command {
 	dnstools=("dig" "host")
 	typeset -r dnstools
 	local tool
+	local i
 	for i in ${dnstools}; do
 		tool==${i}
 		if [[ $? == 0 ]]; then
