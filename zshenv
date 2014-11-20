@@ -24,4 +24,5 @@ if (( $+commands[most] )); then
 	PAGER==most
 fi
 PAGER=${PAGER:-=less}
+export PAGER
 READNULLCMD="${PAGER}"
