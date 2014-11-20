@@ -10,6 +10,7 @@ case "$OSTYPE" in
 		;;
 	freebsd*)
 		export CLICOLOR=1
+		export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
 		LS_OPTIONS='-F'
 		;;
 	*)
