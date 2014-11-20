@@ -1,6 +1,11 @@
 # Searches for given text in man pages and outputs nicely like apropos
 # Requires the 'man' and 'whatis' commands.
 
+# FreeBSD man(1) lacks the -K needed to search text within man pages.
+if [[ $OSTYPE == freebsd* ]]; then
+	return
+fi
+
 if (( ! $+commands[man] || ! $+commands[whatis] )); then
 	return
 fi
