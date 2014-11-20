@@ -1,8 +1,8 @@
 # Syntax highlighting
-ZSH_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
+ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 
 if source \
-	"${ZSH_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" \
+	"${ZSHD_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" \
 	>/dev/null 2>&1; then
 	# Can't modify this in .zshenv since we haven't loaded syntax
 	# highlighting at that time.
@@ -20,7 +20,7 @@ if source \
 
 		print "Updating ZSH Syntax Highlighting"
 		(
-			cd "${ZSH_SYNTAX_HIGHLIGHT_DIR}"
+			cd "${ZSHD_SYNTAX_HIGHLIGHT_DIR}"
 			git pull --quiet
 			# Subshell, so we can return $? from here
 			# and be useful.
@@ -38,8 +38,8 @@ else
 	function install-zsh-syntax-highlighting {
 		local -r ZSHSH_URL="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
-		if [[ -z "${ZSH_SYNTAX_HIGHLIGHT_DIR}" ]]; then
-			print -u 2 "Error: ZSH_SYNTAX_HIGHLIGHT_DIR not set."
+		if [[ -z "${ZSHD_SYNTAX_HIGHLIGHT_DIR}" ]]; then
+			print -u 2 "Error: ZSHD_SYNTAX_HIGHLIGHT_DIR not set."
 			return 1
 		fi
 
@@ -52,7 +52,7 @@ else
 
 		git clone --quiet \
 			"${ZSHSH_URL}" \
-			"${ZSH_SYNTAX_HIGHLIGHT_DIR}"
+			"${ZSHD_SYNTAX_HIGHLIGHT_DIR}"
 		if (( $? )); then
 			print -u 2 "Couldn't install ZSH Syntax Highlighting"
 			return 1
