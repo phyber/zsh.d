@@ -27,5 +27,5 @@ function manhunt {
 		# Add this manpage to our list of already seen
 		# manpages.
 		seenpages+=("${manpage}")
-	done < <(man -w -K "${search_term}")
+	done < <(command man -w -K "${search_term}")
 }
