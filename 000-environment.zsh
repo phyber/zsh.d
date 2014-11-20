@@ -8,7 +8,7 @@ case "$OSTYPE" in
 	linux*)
 		LS_OPTIONS='-F --group-directories-first'
 		;;
-	*bsd*)
+	freebsd*)
 		export CLICOLOR=1
 		LS_OPTIONS='-F'
 		;;
