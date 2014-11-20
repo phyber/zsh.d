@@ -1,5 +1,4 @@
 # Syntax highlighting
-ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 
 if source \
 	"${ZSHD_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" \

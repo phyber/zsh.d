@@ -22,6 +22,9 @@ DREPORT_DIR="${HOME}/Docs/Reports"
 # Setting this to 'vi' enables vi keybinds, anything else results in emacs.
 ZSHD_KEYMAP="emacs"
 
+# Directory where syntax highlight plugin is installed/to be installed.
+ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
+
 # Sometimes we might not have vim installed. Redirect error output.
 if (( $+commands[vim] )); then
 	export EDITOR==vim
