@@ -45,6 +45,7 @@ else
 		if (( ! $+commands[git] )); then
 			print -u 2 "git missing. Cannot install ZSH Syntax Highlighting."
 			print -u 2 "Download it from ${ZSHSH_URL}"
+			return 1
 		fi
 
 		print "Installing ZSH Syntax Highlighting"
