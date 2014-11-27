@@ -26,6 +26,11 @@ function {
 	}
 	readonly pipcmds
 
+	# Don't bother continuing if there are no pip commands.
+	if (( ! ${#pipcmds} )); then
+		return
+	fi
+
 	function $pipcmds {
 		if [[ -n "${VIRTUAL_ENV}" ]]; then
 			# If inside a virtual env, execute pip normally.
