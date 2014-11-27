@@ -54,12 +54,15 @@ setopt BSD_ECHO			# More standard echo
 setopt NO_BEEP			# No beeping on errors
 
 # Load broken-out configuration.
-if [[ -d "${HOME}/.zsh.d" ]]; then
-	# Find all readable .zsh files under ~/.zsh.d
-	for f in ${HOME}/.zsh.d/**/*.zsh(.r); do
-		source ${f}
-	done
-fi
+function {
+	if [[ -d "${HOME}/.zsh.d" ]]; then
+		local f
+		# Find all readable .zsh files under ~/.zsh.d
+		for f in ${HOME}/.zsh.d/**/*.zsh(.r); do
+			source ${f}
+		done
+	fi
+}
 
 # Finally, look for a ~/.zsh_local which can contain private variables not
 # stored in Git.
