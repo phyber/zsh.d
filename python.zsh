@@ -1,20 +1,5 @@
 # Python related doodads.
 
-# pip zsh completion start
-function _pip_completion {
-	local words cword
-	read -Ac words
-	read -cn cword
-	reply=( $( COMP_WORDS="$words[*]" \
-		COMP_CWORD=$(( cword-1 )) \
-		PIP_AUTO_COMPLETE=1 $words[1] ) )
-}
-compctl -K _pip_completion pip
-
-# This makes pip install in usermode outside of virtualenvs but doesn't touch
-# the options inside a virtualenv.
-# Implemented because: Why would pip try to install things globally when
-# running as a normal user?!
 function {
 	# Finds valid pip commands and adds them to pipcmds array.
 	local -a pipcmds
@@ -31,6 +16,10 @@ function {
 		return
 	fi
 
+	# This makes pip install in usermode outside of virtualenvs
+	# but doesn't touch the options inside a virtualenv.
+	# Implemented because: Why would pip try to install things globally
+	# when running as a normal user?!
 	function $pipcmds {
 		if [[ -n "${VIRTUAL_ENV}" ]]; then
 			# If inside a virtual env, execute pip normally.
@@ -40,6 +29,17 @@ function {
 			PIP_USER=1 command $0 $@
 		fi
 	}
+
+	# pip zsh completion start
+	function _pip_completion {
+		local words cword
+		read -Ac words
+		read -cn cword
+		reply=( $( COMP_WORDS="$words[*]" \
+			COMP_CWORD=$(( cword-1 )) \
+			PIP_AUTO_COMPLETE=1 $words[1] ) )
+	}
+	compctl -K _pip_completion pip
 }
 
 if (( $+commands[bpython] )); then
