@@ -31,7 +31,7 @@ fi
 
 # Aliases that are readline wrapped.
 function {
-	if (( $+commands[rlwrap] )); then
+	if (( ${#RLWRAP_BINS} )); then
 		local bin
 		for bin ($RLWRAP_BINS) {
 			alias ${bin}="rlwrap -H ${HOME}/.${bin}_history ${bin}"

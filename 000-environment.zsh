@@ -17,7 +17,10 @@ case "$OSTYPE" in
 	*)
 		;;
 esac
-RLWRAP_BINS=(bc)
+
+if (( $+commands[rlwrap] )); then
+	RLWRAP_BINS=(bc)
+fi
 
 DREPORT_DIR="${HOME}/Docs/Reports"
 
