@@ -83,3 +83,43 @@ function trs {
 
 	tmux rename-session $arguments
 }
+
+# tmux split-window
+# Automatically splits the window in an appropriate direction.
+function tsw {
+	if [ -z "${TMUX}" ]; then
+		print -u 2 "tsw only works from within tmux."
+		return 1
+	fi
+
+	# Have to take multiple steps here to prevent "local" interpreting
+	# arguments to cmd.
+	local cmd
+	cmd="${@}"
+	readonly cmd
+
+	local -a ps
+	ps=($(tmux list-panes -F "#{pane_active} #{pane_width} #{pane_height}" \
+		| awk '{ if ($1 == 1) { print $2/2" "$3; } }'
+		))
+	readonly ps
+
+	local -r half_width=${ps[1]}
+	local -r height=${ps[2]}
+
+	local split_type
+	if [ $half_width -gt $height ]; then
+		# Horizontal
+		split_type="-h"
+	else
+		# Vertical
+		split_type="-v"
+	fi
+	readonly split_type
+
+	if [ -z "${cmd}" ]; then
+		tmux split-window $split_type
+	else
+		tmux split-window $split_type "${cmd}"
+	fi
+}
