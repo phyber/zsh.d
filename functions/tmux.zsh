@@ -1,5 +1,10 @@
 # Functions related to tmux management.
 
+# Don't bother creating functions if tmux isn't installed.
+if (( ! $+commands[tmux] )); then
+	return
+fi
+
 # tmux attach-session
 function ta {
 	local -r session_name="$1"
