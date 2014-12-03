@@ -44,6 +44,8 @@ function td {
 }
 
 # tmux new-session
+# Creates a new session. If an argument is given, that is used as the session
+# name.
 function tn {
 	local -r session_name="$1"
 
@@ -55,6 +57,7 @@ function tn {
 }
 
 # tmux rename-session
+# Renames a session.
 function trs {
 	local target_session
 	local new_name
@@ -104,6 +107,7 @@ function tsw {
 		))
 	readonly ps
 
+	# Width is halved in the awk command above, height not touched.
 	local -r half_width=${ps[1]}
 	local -r height=${ps[2]}
 
