@@ -53,6 +53,13 @@ setopt BSD_ECHO			# More standard echo
 # ZLE
 setopt NO_BEEP			# No beeping on errors
 
+# Autoloading functions.
+function {
+	for f in ${HOME}/.zsh.d/autoload/*; do
+		autoload -Uz ${f:t:r}
+	done
+}
+
 # Load broken-out configuration.
 function {
 	if [[ -d "${HOME}/.zsh.d" ]]; then

@@ -18,7 +18,7 @@ typeset -U PATH # Ensure that each entry in PATH is unique
 export PATH="${HOME}/.local/bin:${PATH}"
 
 typeset -U FPATH
-fpath+="${HOME}/.zsh.d/functions"
+fpath+="${HOME}/.zsh.d/autoload"
 
 # Pager for the null command. READNULLCMD gets trashed on Debian by
 # /etc/zsh/zshrc which is read later. So we must set READNULLCMD through
