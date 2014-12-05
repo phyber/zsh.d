@@ -55,7 +55,11 @@ setopt NO_BEEP			# No beeping on errors
 
 # Autoloading functions.
 function {
-	for f in ${HOME}/.zsh.d/autoload/*; do
+	emulate -L zsh
+	setopt EXTENDED_GLOB
+	# Extended globbing allows us to use ~*~ to exclude files ending with
+	# *~ from the initial * glob.
+	for f in ${HOME}/.zsh.d/autoload/*~*~; do
 		autoload -Uz ${f:t:r}
 	done
 }
