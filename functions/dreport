@@ -193,3 +193,5 @@ function dreport {
 
 	return 0
 }
+
+dreport $@
