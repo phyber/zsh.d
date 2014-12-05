@@ -34,3 +34,5 @@ function manhunt {
 		seenpages+=("${manpage}")
 	done < <(command man -w -K "${search_term}")
 }
+
+manhunt $@
