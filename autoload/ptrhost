@@ -48,3 +48,5 @@ function ptrhost {
 
 	$cmd -t NS "${lookup}"
 }
+
+ptrhost $@
