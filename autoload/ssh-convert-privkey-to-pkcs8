@@ -7,9 +7,6 @@ if (( ! $+commands[openssl] )); then
 fi
 
 function ssh-convert-privkey-to-pkcs8 {
-	# Allow ^C out of the selection prompt.
-	trap 'echo -n Interrupted.; return' SIGINT
-
 	local original_key="$1"
 	# Offer a list of keys from the users .ssh directory if one
 	# wasn't provided.
@@ -22,6 +19,7 @@ function ssh-convert-privkey-to-pkcs8 {
 		done
 	fi
 	unset key		# Not needed past here.
+	unset REPLY		# Not needed past here.
 	readonly original_key	# Shouldn't change now.
 
 	# If the filename we were provided with exists, we're good to
@@ -55,3 +53,5 @@ function ssh-convert-privkey-to-pkcs8 {
 		return 1
 	fi
 }
+
+$0 $@
