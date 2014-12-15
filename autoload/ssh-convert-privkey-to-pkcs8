@@ -18,6 +18,9 @@ function ssh-convert-privkey-to-pkcs8 {
 			break
 		done
 	fi
+	if [[ -z "${REPLY}" ]]; then
+		return 1
+	fi
 	unset key		# Not needed past here.
 	unset REPLY		# Not needed past here.
 	readonly original_key	# Shouldn't change now.
