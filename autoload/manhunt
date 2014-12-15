@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 # Searches for given text in man pages and outputs nicely like apropos
 # Requires the 'man' and 'whatis' commands.
 
