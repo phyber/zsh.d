@@ -7,10 +7,14 @@ if (( ! $+commands[openssl] )); then
 fi
 
 function ssh-convert-privkey-to-pkcs8 {
+	# Allow ^C out of the selection prompt.
+	trap 'echo -n Interrupted.; return' SIGINT
+
 	local original_key="$1"
 	# Offer a list of keys from the users .ssh directory if one
 	# wasn't provided.
 	local key
+	local REPLY
 	if [[ -z "${original_key}" ]]; then
 		select key in ${HOME}/.ssh/*.pub(:r); do
 			original_key=$key
