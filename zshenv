@@ -23,9 +23,6 @@ fpath+="${HOME}/.zsh.d/autoload"
 # Pager for the null command. READNULLCMD gets trashed on Debian by
 # /etc/zsh/zshrc which is read later. So we must set READNULLCMD through
 # PAGER which is used in /etc/zsh/zshrc
-if (( $+commands[most] )); then
-	PAGER==most
-fi
 PAGER=${PAGER:-=less}
 export PAGER
 READNULLCMD="${PAGER}"

@@ -36,6 +36,7 @@ if (( $+commands[vim] )); then
 fi
 export GREP_OPTIONS='--color'
 export LC_COLLATE='C'
+export LESS='-R'
 
 # Hide disclaimers in whois where possible.
 export WHOIS_OPTIONS='-H'
