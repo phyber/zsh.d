@@ -4,11 +4,11 @@
 
 # FreeBSD man(1) lacks the -K needed to search text within man pages.
 if [[ $OSTYPE == freebsd* ]]; then
-	return
+	return 127
 fi
 
 if (( ! $+commands[man] || ! $+commands[whatis] )); then
-	return
+	return 127
 fi
 
 function manhunt {
