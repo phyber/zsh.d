@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 # Coloured man pages
 
 if (( ! $+commands[man] )); then
@@ -15,3 +16,5 @@ function man {
 	LESS_TERMCAP_us=$fg_bold[green] \
 	command man "$@"
 }
+
+man $@
