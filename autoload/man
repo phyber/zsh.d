@@ -2,7 +2,7 @@
 # Coloured man pages
 
 if (( ! $+commands[man] )); then
-	return
+	return 127
 fi
 
 function man {

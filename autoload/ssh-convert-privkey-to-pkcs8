@@ -3,7 +3,7 @@
 # Old key passwords are hashed with MD5. PKCS8 uses PBKDF2/PBES2.
 
 if (( ! $+commands[openssl] )); then
-	return
+	return 127
 fi
 
 function ssh-convert-privkey-to-pkcs8 {
