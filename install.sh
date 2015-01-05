@@ -6,6 +6,8 @@ HOME_ZSHENV="${HOME}/.zshenv"
 ZSHD="${HOME}/.zsh.d"
 ZSHD_ZSHRC="${ZSHD}/zshrc"
 ZSHD_ZSHENV="${ZSHD}/zshenv"
+ZSHD_DIR_PERMS="0700"
+ZSHD_FILE_PERMS="0600"
 
 if [ -f "${HOME_ZSHRC}" ]; then
 	echo "${HOME_ZSHRC} exists, please move it out of the way."
@@ -21,6 +23,20 @@ if [ ! -d "${ZSHD}" ]; then
 	echo "Couldn't find '$ZSHD'. Where are you running me from?"
 	exit 1
 fi
+
+echo "Changing permissions of ${ZSHD} directories to ${ZSHD_DIR_PERMS}"
+find "${ZSHD}" \
+	-type d \
+	-exec /bin/chmod "${ZSHD_DIR_PERMS}" {} \;
+
+echo "Changing permissions of ${ZSHD} files to ${ZSHD_FILE_PERMS}"
+find "${ZSHD}" \
+	-type f \
+	-exec /bin/chmod "${ZSHD_FILE_PERMS}" {} \;
+
+# install.sh should stay executable so that "git pull" won't complain when
+# updating.
+/bin/chmod 0700 "${ZSHD}/install.sh"
 
 echo "Linking ${ZSHD_ZSHRC} to ${HOME_ZSHRC}"
 ln -s "${ZSHD_ZSHRC}" "${HOME_ZSHRC}"
