@@ -41,7 +41,6 @@ function _rmsshkey_removekey {
 			ssh-keygen -R "${addr}" >/dev/null 2>&1
 		fi
 	}
-	return $?
 }
 
 function rmsshkey {
@@ -53,28 +52,29 @@ function rmsshkey {
 		return 1
 	fi
 
-	local v4addrs
-	local v6addrs
-	typeset -a v4addrs
-	typeset -a v6addrs
-
 	# Get a list of IPv4 addresses
+	local v4addrs
+	typeset -a v4addrs
 	v4addrs=($(_rmsshkey_getaddrs "A" "${hostname}"))
+	readonly v4addrs
 
 	# Get a list of IPv6 addresses
+	local v6addrs
+	typeset -a v6addrs
 	v6addrs=($(_rmsshkey_getaddrs "AAAA" "${hostname}"))
+	readonly v4addrs
 
-	# If the hostname didn't resolve at all, finish here.
-	if [[ ${#v4addrs} == 0 && ${#v6addrs} == 0 ]]; then
-		print -u 2 "Error: No A or AAAA records for ${hostname}"
-		return 1
+	# Remove keys for IPv4 PTRs if any
+	if (( ${#v4addrs} > 0 )); then
+		_rmsshkey_removekey ${v4addrs}
 	fi
 
-	# Remove keys for PTRs
-	_rmsshkey_removekey ${v4addrs}
-	_rmsshkey_removekey ${v6addrs}
+	# Remove keys for IPv6 PTRs if any
+	if (( ${#v6addrs} > 0 )); then
+		_rmsshkey_removekey ${v6addrs}
+	fi
 
-	# Finally remove key for host we were initially given
+	# Finally remove key for hostname we were initially given
 	_rmsshkey_removekey ${hostname}
 }
 
