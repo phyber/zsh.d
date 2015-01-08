@@ -1,0 +1,81 @@
+# vim:ft=zsh:
+# rmsshkey removes an ssh key for a hostname and the IP addresses that the
+# hostname points at.
+
+# Checks for the existence of required commands
+function _rmsshkey_checkcmds {
+	local cmd
+	for cmd ("dig" "ssh-keygen") {
+		if (( ! $+commands[$cmd] )); then
+			print "Required command '$cmd' missing."
+			return 1
+		fi
+	}
+	return 0
+}
+
+# Gets the addresses of a given RRType and hostname
+function _rmsshkey_getaddrs {
+	local -r rrtype="$1"
+	local -r hostname="$2"
+	dig +search +noall +answer -t "${rrtype}" "${hostname}" \
+		| awk "{if (\$4 == \"${rrtype}\") { print \$5 }}"
+	return $?
+}
+
+# Checks that a key exists via the exit status of "ssh-keygen -F"
+function _rmsshkey_keyexists {
+	local -r addr="$1"
+	ssh-keygen -F "${addr}" >/dev/null 2>&1
+	return $?
+}
+
+# Removes a key via "ssh-keygen -R" after checking that the key actually
+# exists to begin with. Returns the exit status of the last ssh-keygen
+# invocation.
+function _rmsshkey_removekey {
+	local addr
+	for addr ($@) {
+		if _rmsshkey_keyexists "${addr}"; then
+			print "Removing ssh-key for ${addr}"
+			ssh-keygen -R "${addr}" >/dev/null 2>&1
+		fi
+	}
+	return $?
+}
+
+function rmsshkey {
+	_rmsshkey_checkcmds || return $?
+
+	local -r hostname="$1"
+	if [ -z "${hostname}" ]; then
+		print -u 2 "Provide a hostname to delete the keys for."
+		return 1
+	fi
+
+	local v4addrs
+	local v6addrs
+	typeset -a v4addrs
+	typeset -a v6addrs
+
+	# Get a list of IPv4 addresses
+	v4addrs=($(_rmsshkey_getaddrs "A" "${hostname}"))
+
+	# Get a list of IPv6 addresses
+	v6addrs=($(_rmsshkey_getaddrs "AAAA" "${hostname}"))
+
+	# If the hostname didn't resolve at all, finish here.
+	if [[ ${#v4addrs} == 0 && ${#v6addrs} == 0 ]]; then
+		print -u 2 "Error: No A or AAAA records for ${hostname}"
+		return 1
+	fi
+
+	# Remove keys for PTRs
+	_rmsshkey_removekey ${v4addrs}
+	_rmsshkey_removekey ${v6addrs}
+
+	# Finally remove key for host we were initially given
+	_rmsshkey_removekey ${hostname}
+}
+
+rmsshkey $@
