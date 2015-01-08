@@ -1,5 +1,6 @@
 #!/bin/sh
-# Small shell script to link .zshrc and .zshenv into ${HOME}
+# Small shell script to link .zshrc and .zshenv into ${HOME} and chmod to
+# a slightly more private mode.
 
 HOME_ZSHRC="${HOME}/.zshrc"
 HOME_ZSHENV="${HOME}/.zshenv"
