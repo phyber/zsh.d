@@ -15,12 +15,26 @@ function _rmsshkey_checkcmds {
 }
 
 # Gets the addresses of a given RRType and hostname
-function _rmsshkey_getaddrs {
+function _rmsshkey_getaddr_type {
 	local -r rrtype="$1"
 	local -r hostname="$2"
 	dig +search +noall +answer -t "${rrtype}" "${hostname}" \
 		| awk "{if (\$4 == \"${rrtype}\") { print \$5 }}"
 	return $?
+}
+
+# Gets A and AAAA records for a given hostname.
+function _rmsshkey_getaddrs {
+	local -r hostname="$1"
+	local addrs
+	typeset -a addrs
+	local rrtype
+	for rrtype ("A" "AAAA") {
+		addrs+=($(_rmsshkey_getaddr_type "${rrtype}" "${hostname}"))
+	}
+	readonly addrs
+	echo ${addrs}
+	return 0
 }
 
 # Checks that a key exists via the exit status of "ssh-keygen -F"
@@ -52,27 +66,13 @@ function rmsshkey {
 		return 1
 	fi
 
-	# Get a list of IPv4 addresses
-	local v4addrs
-	typeset -a v4addrs
-	v4addrs=($(_rmsshkey_getaddrs "A" "${hostname}"))
-	readonly v4addrs
-
-	# Get a list of IPv6 addresses
-	local v6addrs
-	typeset -a v6addrs
-	v6addrs=($(_rmsshkey_getaddrs "AAAA" "${hostname}"))
-	readonly v4addrs
-
-	# Remove keys for IPv4 PTRs if any
-	if (( ${#v4addrs} > 0 )); then
-		_rmsshkey_removekey ${v4addrs}
+	local addrs
+	typeset -a addrs
+	addrs=($(_rmsshkey_getaddrs "${hostname}"))
+	if (( ${#addrs} > 0 )); then
+		_rmsshkey_removekey ${addrs}
 	fi
-
-	# Remove keys for IPv6 PTRs if any
-	if (( ${#v6addrs} > 0 )); then
-		_rmsshkey_removekey ${v6addrs}
-	fi
+	readonly addrs
 
 	# Finally remove key for hostname we were initially given
 	_rmsshkey_removekey ${hostname}
