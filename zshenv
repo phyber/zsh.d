@@ -10,7 +10,7 @@ HISTSIZE=1000
 SAVEHIST=10000
 
 ## ZSH Prompt
-PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)%{$fg_bold[green]%}%n@%m%{$reset_color%}${vcs_info_msg_0_}$ '
+PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)%{$fg_bold[green]%}%n@%m%{$reset_color%}${vcs_info_msg_0_}%(!.#.$) '
 PROMPT3='%{$fg[yellow]%}Selection%{$reset_color%}: '
 RPROMPT='%{$fg_bold[blue]%}%~%{$reset_color%}$vi_key_mode'
 
