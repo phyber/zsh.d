@@ -1,8 +1,7 @@
 # Syntax highlighting
 
-if source \
-	"${ZSHD_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" \
-	>/dev/null 2>&1; then
+source "${ZSHD_SYNTAX_HIGHLIGHT_DIR}/zsh-syntax-highlighting.zsh" 2>/dev/null
+if (( $? == 0 )); then
 	# Can't modify this in .zshenv since we haven't loaded syntax
 	# highlighting at that time.
 	if [[ -n $ZSH_HIGHLIGHT_STYLES ]]; then
