@@ -1,6 +1,11 @@
 # vim:ft=zsh:
 # rmsshkey removes an ssh key for a hostname and the IP addresses that the
 # hostname points at.
+#
+# -v: Be verbose
+# -i: Interactive, confirm each key deletion.
+# -n: Dry run mode. Show what actions will be performed, but don't perform
+#     them.
 
 # Checks for the existence of required commands
 function _rmsshkey_checkcmds {
@@ -11,6 +16,14 @@ function _rmsshkey_checkcmds {
 			return 1
 		fi
 	}
+	return 0
+}
+
+# Returns 1 if dry-run mode is enabled, 0 otherwise.
+function _rmsshkey_is_dryrun {
+	if [[ -n "${(k)_rmsshkeys_opts[-n]}" ]]; then
+		return 1
+	fi
 	return 0
 }
 
@@ -50,15 +63,59 @@ function _rmsshkey_keyexists {
 function _rmsshkey_removekey {
 	local addr
 	for addr ($@) {
-		if _rmsshkey_keyexists "${addr}"; then
-			print "Removing ssh-key for ${addr}"
-			ssh-keygen -R "${addr}" >/dev/null 2>&1
+		if ! _rmsshkey_keyexists "${addr}"; then
+			_rmsshkey_verbose "No key for ${addr}"
+			continue;
 		fi
+
+		_rmsshkey_verbose "Removing ssh-key for ${addr}"
+
+		if _rmsshkey_is_dryrun; then
+			continue
+		fi
+
+		ssh-keygen -R "${addr}" >/dev/null 2>&1
 	}
+}
+
+# Output the given line if verbose mode was set.
+function _rmsshkey_verbose {
+	local -r msg="$1"
+	if [[ -n "${(k)_rmsshkey_opts[-v]}" ]]; then
+		print "${msg}"
+	fi
+}
+
+# Show rmsshkey usage information
+function _rmsshkey_usage {
+	echo ""
+	echo "Usage: rmsshkey [-v] [-n] [-i] [-h] <hostname || IP>"
+	echo "   -v: Enable verbose output."
+	echo "   -i: Interactive mode, confirm each key deletion."
+	echo "   -n: Dry run, show what will happen but don't do it."
+	echo "   -h: Show this help"
+	return 1
 }
 
 function rmsshkey {
 	_rmsshkey_checkcmds || return $?
+
+	# Unset the opts array when exiting function.
+	TRAPEXIT() {
+		unset _rmsshkey_opts
+		return $1
+	}
+
+	zparseopts -K -D -E -A _rmsshkey_opts -- \
+		i=interactive \
+		n=dryrun \
+		v=verbose \
+		h=help
+
+	if [[ $? != 0 || -n "${(k)_rmsshkey_opts[-h]}" ]]; then
+		_rmsshkey_usage
+		return $?
+	fi
 
 	local -r hostname="$1"
 	if [ -z "${hostname}" ]; then
