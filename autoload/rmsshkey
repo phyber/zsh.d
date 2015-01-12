@@ -168,13 +168,19 @@ function rmsshkey {
 		return 1
 	fi
 
+	# Get an array of addresses that $hostname points to.
 	local addrs
 	typeset -a addrs
 	addrs=($(_rmsshkey_getaddrs "${hostname}"))
-	if (( ${#addrs} > 0 )); then
-		_rmsshkey_removekey ${addrs}
-	fi
 	readonly addrs
+
+	# Attempt to remove the SSH keys for those addresses.
+	if [[ ${#addrs} -gt 0 ]]; then
+		_rmsshkey_verbose "Found addresses [${(j:, :)addrs}] for ${hostname}."
+		_rmsshkey_removekey ${addrs}
+	else
+		_rmsshkey_verbose "Didn't find any A/AAAA records for ${hostname}"
+	fi
 
 	# Finally remove key for hostname we were initially given
 	_rmsshkey_removekey ${hostname}
