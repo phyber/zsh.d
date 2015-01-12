@@ -10,8 +10,19 @@ HISTSIZE=1000
 SAVEHIST=10000
 
 ## ZSH Prompt
-PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)%{$fg_bold[green]%}%n@%m%{$reset_color%}${vcs_info_msg_0_}%(!.#.$) '
+# Exit status of previous command
+PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)'
+# user@host
+PROMPT+='%{$fg_bold[green]%}%n@%m%{$reset_color%}'
+# VCS Info
+PROMPT+='${vcs_info_msg_0_}'
+# $ or # depending on shell privilege.
+PROMPT+='%(!.#.$) '
+
+# Selection prompt.
 PROMPT3='%{$fg[yellow]%}Selection%{$reset_color%}: '
+
+# Prompt on right shows CWD and vi key mode if we're using vi keybinds.
 RPROMPT='%{$fg_bold[blue]%}%~%{$reset_color%}$vi_key_mode'
 
 typeset -U PATH # Ensure that each entry in PATH is unique
