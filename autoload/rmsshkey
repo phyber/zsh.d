@@ -104,17 +104,21 @@ function _rmsshkey_should_remove {
 function _rmsshkey_removekey {
 	local addr
 	for addr ($@) {
+		# Check if a key for the address actually exists
 		if ! _rmsshkey_keyexists "${addr}"; then
 			_rmsshkey_verbose "No key for ${addr}"
 			continue
 		fi
 
+		# Check if we should remove this particular key (prompts user
+		# if we're in interactive mode)
 		if ! _rmsshkey_should_remove "${addr}"; then
 			continue
 		fi
 
 		_rmsshkey_verbose "Removing ssh-key for ${addr}"
 
+		# If it's a dry run, don't remove anything.
 		if _rmsshkey_is_dryrun; then
 			continue
 		fi
@@ -145,7 +149,8 @@ function _rmsshkey_usage {
 function rmsshkey {
 	_rmsshkey_checkcmds || return $?
 
-	# Unset the opts array when exiting function.
+	# Unset the opts array when exiting function, keeps the environment
+	# nice and clean.
 	TRAPEXIT() {
 		unset _rmsshkey_opts
 		return $1
