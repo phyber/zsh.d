@@ -39,7 +39,7 @@ function _rmsshkey_is_interactive {
 function _rmsshkey_getaddr_type {
 	local -r rrtype="$1"
 	local -r hostname="$2"
-	dig +search +noall +answer -t "${rrtype}" "${hostname}" \
+	dig +search +noall +answer -t "${rrtype}" -q "${hostname}" \
 		| awk "{if (\$4 == \"${rrtype}\") { print \$5 }}"
 	return $?
 }
