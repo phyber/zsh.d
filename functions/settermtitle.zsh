@@ -1,14 +1,5 @@
 autoload -Uz add-zsh-hook
 
-# Set terminal title
-function settermtitle {
-	# FIXME: Shouldn't do this if term doesn't support it.
-	if [[ $TERM != "linux" ]]; then
-		local -r title="$1"
-		print -u 2 -n -f '\033]2;%s\033\\' "${title}"
-	fi
-}
-
 # Sets the title while sitting at the command prompt.
 function _settermtitle_precmd {
 	settermtitle "${HOST%%.*}"
@@ -22,6 +13,19 @@ function _settermtitle_preexec {
 	local -r user_cmd_only="${user_cmd%% *}"
 	#echo "1: $1, 2: $2, 3: $3\n"
 	settermtitle "${user_cmd}"
+}
+
+# Set terminal title
+function settermtitle {
+	# FIXME: Shouldn't do this if term doesn't support it.
+	local -r title="$1"
+	case $TERM in
+	linux)
+		;;
+	*)
+		print -u 2 -n -f '\033]2;%s\033\\' "${title}"
+		;;
+	esac
 }
 
 # Hook above functions into 'precmd' and 'preexec'
