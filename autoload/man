@@ -4,14 +4,12 @@
 function man {
 	emulate -L zsh
 
-	if (( ! $+commands[man] )); then
-		print -u 2 "Error: man not found."
-		return 1
-	fi
+	_zshd_check_cmd "man" || return $?
 
 	if (( $COLUMNS > 80 )); then
 		COLUMNS=80
 	fi
+
 	LESS_TERMCAP_mb=$fg_bold[red] \
 	LESS_TERMCAP_md=$fg_bold[red] \
 	LESS_TERMCAP_me=$reset_color \
