@@ -7,12 +7,14 @@ if [[ $OSTYPE == freebsd* ]]; then
 	return 127
 fi
 
-if (( ! $+commands[man] || ! $+commands[whatis] )); then
-	return 127
-fi
-
 function manhunt {
 	emulate -L zsh
+
+	local -a req_cmds
+	req_cmds=("man" "whatis")
+
+	_zshd_check_cmd ${req_cmds} || return $?
+
 	local -r search_term="$1"
 	local -a seenpages
 	local manpage
