@@ -3,10 +3,8 @@ if [[ -x "${HOME}/.local/go/bin" ]]; then
 	export PATH="${HOME}/.local/go/bin:${PATH}"
 fi
 
-if (( $+commands[go] )); then
-	# GOPATH set to a hidden directory.
-	export GOPATH="${HOME}/.gocode"
+# GOPATH set to a hidden directory.
+export GOPATH="${HOME}/.gocode"
 
-	# Add the $GOPATH bin directory to PATH
-	export PATH="${GOPATH}/bin:${PATH}"
-fi
+# Add the $GOPATH bin directory to PATH
+export PATH="${GOPATH}/bin:${PATH}"

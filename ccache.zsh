@@ -1,9 +1,5 @@
 # vim:ft=zsh:
 
-if (( ! $+commands[ccache] )); then
-	return
-fi
-
 # Should be the same on most systems
 export CCACHE_PATH="/usr/bin:/usr/local/bin"
 
