@@ -1,12 +1,14 @@
 # vim:ft=zsh:
 # Coloured man pages
 
-if (( ! $+commands[man] )); then
-	return 127
-fi
-
 function man {
 	emulate -L zsh
+
+	if (( ! $+commands[man] )); then
+		print -u 2 "Error: man not found."
+		return 1
+	fi
+
 	if (( $COLUMNS > 80 )); then
 		COLUMNS=80
 	fi
