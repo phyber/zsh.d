@@ -1,17 +1,8 @@
 # Functions related to tmux management.
 
-# Checks for required commands.
-function _zshd_tmux_check_cmd {
-	if (( ! $+commands[tmux] )); then
-		print -u 2 "Error: tmux command missing."
-		return 1
-	fi
-	return 0
-}
-
 # tmux attach-session
 function ta {
-	_zshd_tmux_check_cmd || return $?
+	_zshd_check_cmd "tmux" || return $?
 
 	local -r session_name="$1"
 
@@ -32,7 +23,7 @@ function ta {
 
 # tmux detach-client
 function td {
-	_zshd_tmux_check_cmd || return $?
+	_zshd_check_cmd "tmux" || return $?
 
 	local -r session_name="$1"
 
@@ -55,7 +46,7 @@ function td {
 # Creates a new session. If an argument is given, that is used as the session
 # name.
 function tn {
-	_zshd_tmux_check_cmd || return $?
+	_zshd_check_cmd "tmux" || return $?
 
 	local -r session_name="$1"
 
@@ -69,7 +60,7 @@ function tn {
 # tmux rename-session
 # Renames a session.
 function trs {
-	_zshd_tmux_check_cmd || return $?
+	_zshd_check_cmd "tmux" || return $?
 
 	local target_session
 	local new_name
@@ -102,7 +93,7 @@ function trs {
 # tmux split-window
 # Automatically splits the window in an appropriate direction.
 function tsw {
-	_zshd_tmux_check_cmd || return $?
+	_zshd_check_cmd "tmux" || return $?
 
 	if [ -z "${TMUX}" ]; then
 		print -u 2 "tsw only works from within tmux."
