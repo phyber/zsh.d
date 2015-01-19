@@ -7,18 +7,6 @@
 # -n: Dry run mode. Show what actions will be performed, but don't perform
 #     them.
 
-# Checks for the existence of required commands
-function _rmsshkey_checkcmds {
-	local cmd
-	for cmd ("dig" "ssh-keygen") {
-		if (( ! $+commands[$cmd] )); then
-			print "Required command '$cmd' missing."
-			return 1
-		fi
-	}
-	return 0
-}
-
 # Returns 0 if dry-run mode is enabled, 1 otherwise.
 function _rmsshkey_is_dryrun {
 	if [[ -n "${(k)_rmsshkey_opts[-n]}" ]]; then
@@ -137,7 +125,6 @@ function _rmsshkey_verbose {
 
 # Show rmsshkey usage information
 function _rmsshkey_usage {
-	echo ""
 	echo "Usage: rmsshkey [-v] [-n] [-i] [-h] <hostname || IP>"
 	echo "   -v: Enable verbose output."
 	echo "   -i: Interactive mode, confirm each key deletion."
@@ -147,7 +134,11 @@ function _rmsshkey_usage {
 }
 
 function rmsshkey {
-	_rmsshkey_checkcmds || return $?
+	local -a req_cmds
+	req_cmds=("ssh-keygen" "dig")
+	readonly req_cmds
+
+	_zshd_check_cmd ${req_cmds} || return $?
 
 	# Unset the opts array when exiting function, keeps the environment
 	# nice and clean.
