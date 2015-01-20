@@ -13,3 +13,9 @@ function _zshd_check_cmd {
 	done
 	return 0
 }
+
+# Checks if we currently have root privileges. Returns 0 if so, !0 otherwise.
+function _zshd_is_root {
+	[[ $UID == 0 || $EUID == 0 ]]
+	return $?
+}
