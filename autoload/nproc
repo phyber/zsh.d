@@ -27,7 +27,7 @@ function nproc {
 		_nproc_linux $@
 		;;
 	*bsd*)
-		_nproc_freebsd
+		_nproc_bsd
 		;;
 	esac
 }
