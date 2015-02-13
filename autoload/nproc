@@ -1,0 +1,35 @@
+# vim:ft=zsh:
+#
+# Provides an nproc command for systems that lack one.
+
+# Checks for existence of nproc command and uses that if it's available.
+# Otherwise uses getconf, which should be available.
+function _nproc_linux {
+	if ! _zshd_check_cmd "nproc"; then
+		getconf _NPROCESSORS_ONLN
+		return $?
+	fi
+
+	command nproc $@
+	return $?
+}
+
+# The BSDs all have the sysctl interface to this.
+function _nproc_bsd {
+	command sysctl -n hw.ncpu
+	return $?
+}
+
+# Wrapper.
+function nproc {
+	case "$OSTYPE" in
+	linux*)
+		_nproc_linux $@
+		;;
+	*bsd*)
+		_nproc_freebsd
+		;;
+	esac
+}
+
+nproc $@
