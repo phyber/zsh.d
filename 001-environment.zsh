@@ -1,7 +1,7 @@
 # Environment variables.
 #
 HISTIGNORE='man:run-help'
-typeset -T HISTIGNORE histignore # Tied array for easily checking HISTIGNORE
+typeset -gT HISTIGNORE histignore # Tied array for easily checking HISTIGNORE
 
 # Handle some Linux/BSD differences here.
 case "$OSTYPE" in
