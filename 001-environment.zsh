@@ -8,7 +8,7 @@ case "$OSTYPE" in
 	linux*)
 		LS_OPTIONS='-F --group-directories-first'
 		;;
-	freebsd*)
+	freebsd*|darwin*)
 		export CLICOLOR=1
 		export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
 		export TOP="-a -j"
