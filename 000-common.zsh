@@ -14,6 +14,20 @@ function _zshd_check_cmd {
 	return 0
 }
 
+# Checks if there is an executable local zsh, and execs it if there is and it's
+# not the current shell. Relys upon $SHELL being accurate.
+function _zshd_exec_usr_local_bin_zsh {
+	local -r local_zsh="/usr/local/bin/zsh"
+	if [ ! -x $local_zsh ]; then
+		return
+	fi
+
+	if [ $SHELL != $local_zsh ]; then
+		export SHELL="$local_zsh"
+		exec $SHELL
+	fi
+}
+
 # Checks if we currently have root privileges. Returns 0 if so, !0 otherwise.
 function _zshd_is_root {
 	[[ $UID == 0 || $EUID == 0 ]]
