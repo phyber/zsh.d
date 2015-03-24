@@ -1,7 +1,13 @@
 # Functions related to tmux management.
 
+# Helper functions.
 function _zshd_tmux_has_session {
 	tmux has-session 2>/dev/null
+	return $?
+}
+
+function _zshd_tmux_within {
+	[ -n "$TMUX" ]
 	return $?
 }
 
@@ -94,7 +100,7 @@ function trs {
 function tsw {
 	_zshd_check_cmd "tmux" || return $?
 
-	if [ -z "${TMUX}" ]; then
+	if [ ! _zshd_tmux_within ]; then
 		print -u 2 "tsw only works from within tmux."
 		return 1
 	fi
