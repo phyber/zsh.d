@@ -113,7 +113,7 @@ function tsw {
 
 	local -a ps
 	ps=($(tmux list-panes -F "#{pane_active} #{pane_width} #{pane_height}" \
-		| awk '{ if ($1 == 1) { print $2/2" "$3; } }'
+		| awk '{ if ($1 == 1) { print int($2/2)" "$3; } }'
 		))
 	readonly ps
 
