@@ -45,6 +45,9 @@ export WHOIS_OPTIONS='-H'
 if (( $+commands[lesspipe] )); then
 	eval $(lesspipe)
 fi
+if (( $+commands[lesspipe.sh] )); then
+	eval $(lesspipe.sh)
+fi
 
 if (( $+commands[manpath] )); then
 	export MANPATH=$(manpath 2>/dev/null)
