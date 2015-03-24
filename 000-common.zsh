@@ -15,7 +15,7 @@ function _zshd_check_cmd {
 }
 
 # Checks if there is an executable local zsh, and execs it if there is and it's
-# not the current shell. Relys upon $SHELL being accurate.
+# not the current shell. Relies upon $SHELL being accurate.
 function _zshd_exec_usr_local_bin_zsh {
 	local -r local_zsh="/usr/local/bin/zsh"
 	if [ ! -x $local_zsh ]; then
