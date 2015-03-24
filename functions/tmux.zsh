@@ -1,15 +1,17 @@
 # Functions related to tmux management.
 
+function _zshd_tmux_has_session {
+	tmux has-session 2>/dev/null
+	return $?
+}
+
 # tmux attach-session
 function ta {
 	_zshd_check_cmd "tmux" || return $?
 
 	local -r session_name="$1"
 
-	tmux has-session 2>/dev/null
-	local -r has_session="$?"
-
-	if [ $has_session != 0 ]; then
+	if [ _zshd_tmux_has_session != 0 ]; then
 		print -u 2  "No sessions to attach to."
 		return $has_session
 	fi
@@ -27,10 +29,7 @@ function td {
 
 	local -r session_name="$1"
 
-	tmux has-session 2>/dev/null
-	local -r has_session="$?"
-
-	if [ $has_session != 0 ]; then
+	if [ _zshd_tmux_has_session != 0 ]; then
 		print -u 2 "Nothing to detach."
 		return $has_session
 	fi
