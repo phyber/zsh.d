@@ -1,11 +1,20 @@
 # ZLE keymap
 
-if [ "$ZSHD_KEYMAP" != "vi" ]; then
-	bindkey -e			# EMACS key mode
-	return
+if [ "$ZSHD_KEYMAP" = "vi" ]; then
+	bindkey -v	# vi key mode
+else
+	bindkey -e	# EMACS key mode
 fi
 
-bindkey -v			# vi key mode
+# Bind home/end on a Mac.
+case "$OSTYPE" in
+	darwin*)
+		bindkey "\e[H" beginning-of-line
+		bindkey "\e[F" end-of-line
+		;;
+	*)
+		;;
+esac
 
 # If we're started with the vi keymap, enable some extra things.
 if [[ ${$(bindkey -lL main):2:1} == 'viins' ]]; then
