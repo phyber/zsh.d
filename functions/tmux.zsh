@@ -17,7 +17,7 @@ function ta {
 
 	local -r session_name="$1"
 
-	if [ _zshd_tmux_has_session != 0 ]; then
+	if [ ! _zshd_tmux_has_session ]; then
 		print -u 2  "No sessions to attach to."
 		return $has_session
 	fi
@@ -35,7 +35,7 @@ function td {
 
 	local -r session_name="$1"
 
-	if [ _zshd_tmux_has_session != 0 ]; then
+	if [ ! _zshd_tmux_has_session ]; then
 		print -u 2 "Nothing to detach."
 		return $has_session
 	fi
