@@ -13,6 +13,7 @@ case "$OSTYPE" in
 		bindkey "\e[F" end-of-line
 		;;
 	*)
+		bindkey "\e[Z" reverse-menu-complete
 		;;
 esac
 
