@@ -9,14 +9,14 @@ fi
 # Bind home/end on a Mac.
 case "$OSTYPE" in
 	darwin*)
-		bindkey "\e[H" beginning-of-line
-		bindkey "\e[F" end-of-line
+		bindkey '^[[H' beginning-of-line
+		bindkey '^[[F' end-of-line
 		;;
 	*)
 		;;
 esac
 
-bindkey "\e[Z" reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete
 
 # If we're started with the vi keymap, enable some extra things.
 if [[ ${$(bindkey -lL main):2:1} == 'viins' ]]; then
@@ -43,10 +43,10 @@ if [[ ${$(bindkey -lL main):2:1} == 'viins' ]]; then
 	zle -N zle-line-finish
 	zle -N zle-keymap-select
 	# Default Debian zshrc sets these to silly mode.
-	bindkey -M viins "\e[A" up-line-or-history
-	bindkey -M viins "\e[B" down-line-or-history
-	bindkey -M viins "\eOA" up-line-or-history
-	bindkey -M viins "\eOB" down-line-or-history
+	bindkey -M viins '^[[A' up-line-or-history
+	bindkey -M viins '^[[B' down-line-or-history
+	bindkey -M viins '^[OA' up-line-or-history
+	bindkey -M viins '^[OB' down-line-or-history
 fi
 
 # Adds a space after the command line when browsing up/down in history.
