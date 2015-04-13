@@ -13,9 +13,10 @@ case "$OSTYPE" in
 		bindkey "\e[F" end-of-line
 		;;
 	*)
-		bindkey "\e[Z" reverse-menu-complete
 		;;
 esac
+
+bindkey "\e[Z" reverse-menu-complete
 
 # If we're started with the vi keymap, enable some extra things.
 if [[ ${$(bindkey -lL main):2:1} == 'viins' ]]; then
