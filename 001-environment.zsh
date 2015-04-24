@@ -13,6 +13,11 @@ case "$OSTYPE" in
 		export LSCOLORS="ExGxFxdxCxDxDxhbadExEx"
 		export TOP="-a -j"
 		LS_OPTIONS='-F'
+
+		# Fix help.
+		unalias run-help
+		autoload run-help
+
 		# Executes a local install of ZSH if there is one, otherwise
 		# continues to use system zsh
 		_zshd_exec_usr_local_bin_zsh
