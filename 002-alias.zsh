@@ -29,6 +29,11 @@ if (( $+commands[docker.io] )); then
 	alias docker='docker.io'
 fi
 
+# Use pygmentize to get a coloured cat.
+if (( $+commands[pygmentize] )); then
+	alias ccat='pygmentize -g'
+fi
+
 # Aliases that are readline wrapped.
 function {
 	if (( ${#RLWRAP_BINS} )); then
