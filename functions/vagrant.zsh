@@ -53,5 +53,5 @@ function vast {
 }
 
 function vaup {
-	vagrant up --parallel $@
+	vagrant up $@
 }
