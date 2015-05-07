@@ -44,9 +44,17 @@ function varb {
 # first blank line it sees.
 function vast {
 	while read line; do
+		# Checks for the blank line after listing VMs.
 		if [ ${#line} -eq 0 ]; then
 			break
 		fi
+
+		# Checks for the "no active Vagrant" line if no running VMs.
+		if grep -q "no active Vagrant" <<<"${line}"; then
+			break
+		fi
+
+		# Otherwise output!
 		echo $line
 	done < <(vagrant global-status $@)
 	return $?
