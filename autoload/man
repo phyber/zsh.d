@@ -6,8 +6,9 @@ function man {
 
 	_zshd_check_cmd "man" || return $?
 
+	# Local vars set in an if are visible outside of the if.
 	if (( $COLUMNS > 80 )); then
-		COLUMNS=80
+		local MANWIDTH=80
 	fi
 
 	LESS_TERMCAP_mb=$fg_bold[red] \
@@ -17,8 +18,8 @@ function man {
 	LESS_TERMCAP_so=$bg[blue]$fg_bold[yellow] \
 	LESS_TERMCAP_ue=$reset_color \
 	LESS_TERMCAP_us=$fg_bold[green] \
-	COLUMNS=$COLUMNS \
-	command man "$@"
+	MANWIDTH=$MANWIDTH \
+	command man $@
 }
 
 man $@
