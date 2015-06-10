@@ -11,6 +11,10 @@ case "$OSTYPE" in
 	freebsd*)
 		export PATH="/usr/local/libexec/ccache:$PATH"
 		;;
+	darwin*)
+		# ccache installed via brew.
+		export PATH="/usr/local/opt/ccache/libexec:$PATH"
+		;;
 	*)
 		;;
 esac
