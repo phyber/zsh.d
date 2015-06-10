@@ -1,14 +1,16 @@
-# Load SSH keychain with all keys found in ~/.ssh if keychain command exists.
+# Load SSH keychain with all keys found in ~/.ssh if keychain
+# command exists.
 
 if (( ! $+commands[keychain] )); then
 	return
 fi
 
 local -r keychain_file="${HOME}/.keychain/${HOST}-sh"
-local timeout=$KEYCHAIN_TIMEOUT_MINS
 
-if [[ -z "$timeout" ]]; then
-	timeout=()	# cache forever.
+local timeout
+if [[ -z "$KEYCHAIN_TIMEOUT_MINS" ]]; then
+	# cache forever
+	timeout=()
 else
 	timeout=("--timeout" "$timeout")
 fi
