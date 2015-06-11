@@ -1,7 +1,7 @@
 # Ruby related stuff.
 
 if (( $+commands[rbenv] )); then
-	export PATH="${HOME}/.rbenv/bin:${PATH}"
+	_zshd_prepend_path "${HOME}/.rbenv/bin"
 	eval "$(rbenv init -)"
 fi
 
@@ -9,5 +9,5 @@ fi
 # TODO: Only do this for the active version of ruby.
 local p
 for p in ${HOME}/.gem/ruby/*; do
-	export PATH="$p/bin:$PATH"
+	_zshd_prepend_path $p
 done

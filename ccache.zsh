@@ -6,14 +6,14 @@ export CCACHE_PATH="/usr/bin:/usr/local/bin"
 # ccache libexec location changes.
 case "$OSTYPE" in
 	linux*)
-		export PATH="/usr/lib/ccache:$PATH"
+		_zshd_prepend_path "/usr/lib/ccache"
 		;;
 	freebsd*)
-		export PATH="/usr/local/libexec/ccache:$PATH"
+		_zshd_prepend_path "/usr/local/libexec/ccache"
 		;;
 	darwin*)
 		# ccache installed via brew.
-		export PATH="/usr/local/opt/ccache/libexec:$PATH"
+		_zshd_prepend_path "/usr/local/opt/ccache/libexec"
 		;;
 	*)
 		;;

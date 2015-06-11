@@ -33,3 +33,13 @@ function _zshd_is_root {
 	[[ $UID == 0 || $EUID == 0 ]]
 	return $?
 }
+
+# Adds the given paths to the beginning of $PATH
+function _zshd_prepend_path {
+	local p
+	for p ($@) {
+		if [[ -x "$p" ]]; then
+			export PATH="$p:$PATH"
+		fi
+	}
+}
