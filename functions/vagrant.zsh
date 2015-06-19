@@ -40,6 +40,11 @@ function varb {
 	return $?
 }
 
+function vash {
+	vagrant ssh $@
+	return $?
+}
+
 # vast executes global-status, and removes the footer by exiting at the
 # first blank line it sees.
 function vast {
