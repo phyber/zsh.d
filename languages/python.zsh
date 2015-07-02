@@ -1,6 +1,12 @@
 # Python related doodads.
 
 function {
+	case $OSTYPE in
+		darwin*)
+			_zsh_prepend_path ${HOME}/Library/Python/*/bin
+			;;
+	esac
+
 	# Finds valid pip commands and adds them to pipcmds array.
 	local -a pipcmds
 	local cmd
