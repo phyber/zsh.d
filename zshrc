@@ -13,6 +13,10 @@ setopt AUTO_PUSHD		# Push directories to dirstack on cd.
 setopt PUSHD_IGNORE_DUPS	# No duplicates on dirstack.
 setopt PUSHD_SILENT		# Don't print dirstack after {push,pop}d.
 
+# Expansion and globbing
+setopt NO_NOMATCH		# Bash type behaviour when expanding globs
+				# in command arguments.
+
 # History
 setopt BANG_HIST		# ! history at the prompt.
 setopt EXTENDED_HISTORY		# Timestamped history.
