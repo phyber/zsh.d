@@ -7,7 +7,4 @@ fi
 
 # Add local ruby gems paths to PATH
 # TODO: Only do this for the active version of ruby.
-local p
-for p in ${HOME}/.gem/ruby/*; do
-	_zshd_prepend_path $p
-done
+_zshd_prepend_path ${HOME}/.gem/ruby/*/bin
