@@ -3,7 +3,7 @@
 function {
 	case $OSTYPE in
 		darwin*)
-			_zsh_prepend_path ${HOME}/Library/Python/*/bin
+			_zshd_prepend_path ${HOME}/Library/Python/*/bin
 			;;
 	esac
 
