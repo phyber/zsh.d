@@ -25,8 +25,13 @@ PROMPT3='%{$fg[yellow]%}Selection%{$reset_color%}: '
 # Prompt on right shows CWD and vi key mode if we're using vi keybinds.
 RPROMPT='%{$fg_bold[blue]%}%~%{$reset_color%}$vi_key_mode'
 
-typeset -U PATH # Ensure that each entry in PATH is unique
+# Ensure that each entry in PATH is unique
+typeset -U PATH
 export PATH="${HOME}/.local/bin:${PATH}"
+
+# Ensure uniqueness of LD_LIBRARY_PATH entries.
+typeset -T LD_LIBRARY_PATH ld_library_path
+typeset -U LD_LIBRARY_PATH
 
 typeset -U FPATH
 fpath+="${HOME}/.zsh.d/autoload"
