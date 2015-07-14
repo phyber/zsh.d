@@ -42,7 +42,6 @@ ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 if (( $+commands[vim] )); then
 	export EDITOR==vim
 fi
-export GREP_OPTIONS='--color'
 export LC_COLLATE='C'
 export LESS='-R'
 

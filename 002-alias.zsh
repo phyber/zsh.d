@@ -8,6 +8,9 @@ if [[ "${TERM}" != "dumb" ]]; then
 	fi
 fi
 
+# Colours for grep
+alias grep='grep --color'
+
 # Force aptitude to the width of $COLUMNS.
 # Useful when piping to a pager
 if (( $+commands[aptitude] )); then
