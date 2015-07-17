@@ -19,6 +19,16 @@ case "$OSTYPE" in
 		;;
 esac
 
+case "$MACHTYPE" in
+	armv6)
+		# We're probably on a Raspberry Pi, make the cache smaller.
+		export CCACHE_MAXSIZE="1G"
+		;;
+	*)
+		# Otherwise we'll just accept the default
+		;;
+esac
+
 # If we're root, store ccache in /var.
 if _zshd_is_root; then
 	export CCACHE_DIR="/var/cache/ccache"
