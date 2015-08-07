@@ -105,7 +105,7 @@ function _vagrant_box_latest {
 	vagrant box list \
 		| tr -s ' ' \
 		| tr -d '(),' \
-		| sort -k3Vr \
+		| _vagrant_version_sort \
 		| awk '!_[$1]++' \
 		| grep "${box_name}" \
 		| cut -d' ' -f3
@@ -118,8 +118,26 @@ function _vagrant_box_outdated {
 	vagrant box list \
 		| tr -s ' ' \
 		| tr -d '(),' \
-		| sort -k3Vr \
+		| _vagrant_version_sort \
 		| grep "${box}" \
 		| cut -d' ' -f3 \
 		| grep -v "^${latest}$"
+}
+
+# Attempt to provide a working version sort for BSD sort, just for the
+# purpose of sorting vagrant box versions.
+function _vagrant_version_sort {
+	case "$OSTYPE" in
+		linux*)
+			# Assume GNU sort extensions on Linux
+			sort -k3Vr
+			;;
+		*)
+			# Basic sort as default, assuming version numbers like
+			# 0.2.20, 0.2.13, a.b.cc
+			# Will break if fields a or b become more than single
+			# digit
+			sort -k3.1,1nr -k3.3,3nr -k3.5nr
+			;;
+	esac
 }
