@@ -128,16 +128,17 @@ function _vagrant_box_outdated {
 # purpose of sorting vagrant box versions.
 function _vagrant_version_sort {
 	case "$OSTYPE" in
-		linux*)
-			# Assume GNU sort extensions on Linux
-			sort -k3Vr
-			;;
-		*)
-			# Basic sort as default, assuming version numbers like
+		darwin*)
+			# OS X lacks a recent sort binary, so attempt to fake
+			# a version sort. Works for versions like:
 			# 0.2.20, 0.2.13, a.b.cc
 			# Will break if fields a or b become more than single
 			# digit
 			sort -k3.1,1nr -k3.3,3nr -k3.5nr
+			;;
+		*)
+			# Assume fancy sort by default
+			sort -k3Vr
 			;;
 	esac
 }
