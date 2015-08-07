@@ -124,8 +124,6 @@ function _vagrant_box_outdated {
 		| grep -v "^${latest}$"
 }
 
-# Attempt to provide a working version sort for BSD sort, just for the
-# purpose of sorting vagrant box versions.
 function _vagrant_version_sort {
 	case "$OSTYPE" in
 		darwin*)
