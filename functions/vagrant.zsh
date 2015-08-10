@@ -4,14 +4,12 @@
 
 function vacu {
 	vagrant cucumber $@
-	return $?
 }
 
 # Forces destruction and then ups clean VMs.
 function vadu {
-	vakill $@ && \
-	vaup $@
-	return $?
+	vakill $@ \
+		&& vaup $@
 }
 
 # Toggles VAGRANT_CUCUMBER_FORCE_COLOUR
@@ -27,22 +25,18 @@ function vafc {
 
 function vaha {
 	vagrant halt $@
-	return $?
 }
 
 function vakill {
 	vagrant destroy -f $@
-	return $?
 }
 
 function varb {
 	vagrant snap rollback $@
-	return $?
 }
 
 function vash {
 	vagrant ssh $@
-	return $?
 }
 
 # vast executes global-status, and removes the footer by exiting at the
@@ -62,7 +56,6 @@ function vast {
 		# Otherwise output!
 		echo $line
 	done < <(vagrant global-status $@)
-	return $?
 }
 
 function vaup {
