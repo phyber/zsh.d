@@ -3,12 +3,10 @@
 # Helper functions.
 function _zshd_tmux_has_session {
 	tmux has-session 2>/dev/null
-	return $?
 }
 
 function _zshd_tmux_within {
 	[ -n "$TMUX" ]
-	return $?
 }
 
 # tmux attach-session
