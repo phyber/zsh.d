@@ -10,13 +10,17 @@ if (( $+commands[rbenv] )); then
 	eval "$(rbenv init -)"
 fi
 
-# Hijack the gem command to setup rbenv shims and rehash PATH after install.
+# Hijack the gem command to setup rbenv shims and rehash PATH appropriately.
 function gem {
 	command gem $@
-	if [ "$1" == 'install' ]; then
+	if [ \
+		"$1" == 'install' \
+		-o "$1" == 'uninstall' \
+		-o "$1" == 'update' \
+	]; then
 		if (( $+commands[rbenv] )); then
 			rbenv rehash
-			hash -r
 		fi
+		hash -r
 	fi
 }
