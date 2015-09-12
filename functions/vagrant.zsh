@@ -42,6 +42,7 @@ function vash {
 # vast executes global-status, and removes the footer by exiting at the
 # first blank line it sees.
 function vast {
+	local line
 	while read line; do
 		# Checks for the blank line after listing VMs.
 		if [ ${#line} -eq 0 ]; then
@@ -106,7 +107,7 @@ function _vagrant_box_latest {
 
 function _vagrant_box_outdated {
 	local -r box="$1"
-	local -r latest=$(_vagrant_box_latest "${box}")
+	local -r latest="$(_vagrant_box_latest "${box}")"
 
 	vagrant box list \
 		| tr -s ' ' \
