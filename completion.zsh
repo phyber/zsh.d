@@ -32,7 +32,7 @@ zstyle ':completion:*:functions' ignored-patterns \
 
 # Colours during tab completion
 # (s.:.) splits at the : during parameter expansion.
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # Menu for completions
 zstyle ':completion:*' menu yes select=10
