@@ -19,6 +19,10 @@ zstyle ':completion:*:complete:vim:*' ignored-patterns \
 	'(|*/)(.git|.svn|CVS)' \
 	'*.pyc' '*.o'
 
+# Completion ignores for cd
+zstyle ':completion:*:cd:*' ignored-patterns \
+	'(*/)#lost+found'
+
 # Ignore executable files when completing for vim.
 #zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*(*)'
 # Completion ignores for commands (files marked executable)
