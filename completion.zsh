@@ -41,3 +41,6 @@ zstyle ':completion:*' menu yes select=10
 #zstyle ':completion:*:processes' command \
 #	'ps -U ${USER} xopid,%cpu,%mem,vsz,rss,tname,stat,start_time,time,command'
 zstyle ':completion:*:processes' command 'ps ux'
+
+# Don't offer the same filename twice if it's already on the command line.
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
