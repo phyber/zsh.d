@@ -77,7 +77,7 @@ function vaub {
 function varo {
 	local box
 	while read -u 3 box; do
-		local old
+		local old=''
 		while read -u 4 old; do
 			if ! vagrant box remove "${box}" --box-version "${old}"; then
 				print -u 2 "Problem removing outdated box: ${box} -> ${old}"
