@@ -6,11 +6,12 @@ autoload -Uz compinit && compinit
 ####
 # Use cache so that complicated completions run faster
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ${HOME}/.zsh_compcache
+zstyle ':completion:*' cache-path "${HOME}/.zsh_compcache"
 
 # General completion ignores for all commands
 zstyle ':completion:*:(all-|)files' ignored-patterns \
-	'*\~' '(|*/)(.git|.svn|CVS)'
+	'*\~' \
+	'(|*/)(.git|.svn|CVS)'
 
 # Completion ignores for vim
 zstyle ':completion:*:complete:vim:*' ignored-patterns \
@@ -21,15 +22,17 @@ zstyle ':completion:*:complete:vim:*' ignored-patterns \
 # Ignore executable files when completing for vim.
 #zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*(*)'
 # Completion ignores for commands (files marked executable)
-zstyle ':completion:*:complete:-command-:*' ignored-patterns '*\~'
+zstyle ':completion:*:complete:-command-:*' ignored-patterns \
+	'*\~'
 zstyle ':completion:*:-command-:*:' verbose false
 
 # Don't tab complete zsh _* functions
-zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:functions' ignored-patterns \
+	'_*'
 
 # Colours during tab completion
 # (s.:.) splits at the : during parameter expansion.
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # Menu for completions
 zstyle ':completion:*' menu yes select=10
