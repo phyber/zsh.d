@@ -16,14 +16,6 @@ if [ -x "${ZSHD_RBENV_DIR}/bin/rbenv" ]; then
 
 		[[ $? == 0 ]] && exec "${SHELL}"
 	}
-
-	function update-ruby-build {
-		_zshd_git_update \
-			'ruby-build' \
-			"${ZSHD_RBENV_DIR}/plugins/ruby-build"
-
-		[[ $? == 0 ]] && exec "${SHELL}"
-	}
 else
 	function install-rbenv {
 		local -r RBENV_URL='https://github.com/sstephenson/rbenv.git'
@@ -35,13 +27,24 @@ else
 
 		[[ $? == 0 ]] && exec "${SHELL}"
 	}
+fi
+
+if [ -d "${ZSHD_RUBYBUILD_DIR}" ]; then
+	function update-ruby-build {
+		_zshd_git_update \
+			'ruby-build' \
+			"${ZSHD_RUBYBUILD_DIR}"
+
+		[[ $? == 0 ]] && exec "${SHELL}"
+	}
+else
 	function install-ruby-build {
 		local -r RUBY_BUILD_URL='https://github.com/sstephenson/ruby-build.git'
 
 		_zshd_git_install \
 			'ruby-build' \
 			"${RUBY_BUILD_URL}" \
-			"${ZSHD_RBENV_DIR}/plugins/ruby-build"
+			"${ZSHD_RUBYBUILD_DIR}"
 
 		[[ $? == 0 ]] && exec "${SHELL}"
 	}
