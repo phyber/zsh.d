@@ -5,14 +5,14 @@
 #_zshd_prepend_path ${HOME}/.gem/ruby/*/bin
 
 # Add rbenv gems last so they appear in the PATH first.
-if (( $+commands[rbenv] )); then
+if [ -x "${ZSHD_RBENV_DIR}/bin/rbenv" ]; then
 	_zshd_prepend_path "${HOME}/.rbenv/bin"
 	eval "$(rbenv init -)"
 
 	function update-rbenv {
 		print "Updating rbenv"
 		(
-			cd "${HOME}/.rbenv"
+			cd "${ZSHD_RBENV_DIR}"
 			git pull --quiet
 			return $?
 		)
@@ -30,7 +30,7 @@ else
 
 		git clone --quiet \
 			"${RBENV_URL}" \
-			"${HOME}/.rbenv"
+			"${ZSHD_RBENV_DIR}"
 		if (( $? )); then
 			print -u 2 "Couldn't install rbenv"
 			return 1
