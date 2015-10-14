@@ -38,6 +38,9 @@ ZSHD_KEYMAP="emacs"
 # Directory where syntax highlight plugin is installed/to be installed.
 ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 
+# rbenv directory.
+ZSHD_RBENV_DIR="${HOME}/.rbenv"
+
 # Sometimes we might not have vim installed. Redirect error output.
 if (( $+commands[vim] )); then
 	export EDITOR==vim
