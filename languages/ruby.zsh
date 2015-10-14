@@ -10,34 +10,22 @@ if [ -x "${ZSHD_RBENV_DIR}/bin/rbenv" ]; then
 	eval "$(rbenv init -)"
 
 	function update-rbenv {
-		print "Updating rbenv"
-		(
-			cd "${ZSHD_RBENV_DIR}"
-			git pull --quiet
-			return $?
-		)
-		if (( $? )); then
-			print -u 2 "Couldn't update rbenv"
-			return 1
-		fi
-		exec "${SHELL}"
+		_zshd_git_update \
+			'rbenv' \
+			"${ZSHD_RBENV_DIR}"
+
+		[[ $? == 0 ]] && exec "${SHELL}"
 	}
 else
 	function install-rbenv {
 		local -r RBENV_URL='https://github.com/sstephenson/rbenv.git'
 
-		print "Installing rbenv"
-
-		git clone --quiet \
+		_zshd_git_install \
+			'rbenv' \
 			"${RBENV_URL}" \
 			"${ZSHD_RBENV_DIR}"
-		if (( $? )); then
-			print -u 2 "Couldn't install rbenv"
-			return 1
-		fi
 
-		print "rbenv installed."
-		exec "${SHELL}"
+		[[ $? == 0 ]] && exec "${SHELL}"
 	}
 fi
 
