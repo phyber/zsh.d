@@ -8,6 +8,37 @@
 if (( $+commands[rbenv] )); then
 	_zshd_prepend_path "${HOME}/.rbenv/bin"
 	eval "$(rbenv init -)"
+
+	function update-rbenv {
+		print "Updating rbenv"
+		(
+			cd "${HOME}/.rbenv"
+			git pull --quiet
+			return $?
+		)
+		if (( $? )); then
+			print -u 2 "Couldn't update rbenv"
+			return 1
+		fi
+		exec "${SHELL}"
+	}
+else
+	function install-rbenv {
+		local -r RBENV_URL='https://github.com/sstephenson/rbenv.git'
+
+		print "Installing rbenv"
+
+		git clone --quiet \
+			"${RBENV_URL}" \
+			"${HOME}/.rbenv"
+		if (( $? )); then
+			print -u 2 "Couldn't install rbenv"
+			return 1
+		fi
+
+		print "rbenv installed."
+		exec "${SHELL}"
+	}
 fi
 
 # Hijack the gem command to setup rbenv shims and rehash PATH appropriately.
