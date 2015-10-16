@@ -9,7 +9,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${HOME}/.zsh_compcache"
 
 # General completion ignores for all commands
-zstyle ':completion:*:(all-|)files' ignored-patterns \
+zstyle ':completion:*:(all-|globbed-|)files' ignored-patterns \
 	'*\~' \
 	'(|*/)(.git|.svn|CVS)'
 
