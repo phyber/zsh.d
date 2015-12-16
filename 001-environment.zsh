@@ -41,8 +41,12 @@ ZSHD_SYNTAX_HIGHLIGHT_DIR="${HOME}/.zshsh"
 # rbenv directory.
 ZSHD_RBENV_DIR="${HOME}/.rbenv"
 
-# ruby-build dir
-ZSHD_RUBYBUILD_DIR="${ZSHD_RBENV_DIR}/plugins/ruby-build"
+# rbenv plugins
+ZSHD_RBENV_PLUGINS=(
+	rbenv/ruby-build
+	rbenv/rbenv-gem-rehash
+	rkh/rbenv-update
+)
 
 # Sometimes we might not have vim installed. Redirect error output.
 if (( $+commands[vim] )); then
