@@ -66,11 +66,14 @@ function vaup {
 # Vagrant update boxes
 function vaub {
 	local box
-	while read box; do
-		if ! vagrant box update --box "${box}"; then
-			print -u 2 "Vagrant box '${box}' not updated."
-		fi
-	done < <(_vagrant_box_names)
+	while read -u 3 box; do
+		local provider=''
+		while read -u 4 provider; do
+			if ! _vagrant_box_update "${box}" "${provider}"; then
+				print -u 2 "Vagrant box '${box}' not updated."
+			fi
+		done 4< <(_vagrant_box_providers "${box}")
+	done 3< <(_vagrant_box_names)
 }
 
 # Vagrant remove outdated.
@@ -84,6 +87,25 @@ function varo {
 			fi
 		done 4< <(_vagrant_box_outdated "${box}")
 	done 3< <(_vagrant_box_names)
+}
+
+function _vagrant_box_update {
+	local box="$1"
+	local provider="$2"
+
+	vagrant box update \
+		--box "${box}" \
+		--provider "${provider}"
+}
+
+function _vagrant_box_providers {
+	local box="$1"
+
+	vagrant box list \
+		| grep "^${box}" \
+		| tr -s ' ' \
+		| tr -d '(),' \
+		| cut -d' ' -f2
 }
 
 function _vagrant_box_names {
