@@ -80,12 +80,15 @@ function vaub {
 function varo {
 	local box
 	while read -u 3 box; do
-		local old=''
-		while read -u 4 old; do
-			if ! vagrant box remove "${box}" --box-version "${old}"; then
-				print -u 2 "Problem removing outdated box: ${box} -> ${old}"
-			fi
-		done 4< <(_vagrant_box_outdated "${box}")
+		local provider=''
+		while read -u 5 provider; do
+			local old=''
+			while read -u 4 old; do
+				if ! _vagrant_box_remove "${box}" "${old}" "${provider}"; then
+					print -u 2 "Problem removing outdated box: ${box} -> ${old}"
+				fi
+			done 4< <(_vagrant_box_outdated "${box}" "${provider}")
+		done 5< <(_vagrant_box_providers "${box}")
 	done 3< <(_vagrant_box_names)
 }
 
@@ -98,8 +101,19 @@ function _vagrant_box_update {
 		--provider "${provider}"
 }
 
+function _vagrant_box_remove {
+	local -r box="$1"
+	local -r version="$2"
+	local -r provider="$3"
+
+	vagrant box remove \
+		"${box}" \
+		--box-version "${version}" \
+		--provider "${provider}"
+}
+
 function _vagrant_box_providers {
-	local box="$1"
+	local -r box="$1"
 
 	vagrant box list \
 		| grep "^${box}" \
@@ -110,6 +124,7 @@ function _vagrant_box_providers {
 
 function _vagrant_box_names {
 	vagrant box list \
+		| grep -v '^There are no installed boxes' \
 		| cut -d' ' -f1 \
 		| sort \
 		| uniq
@@ -117,10 +132,12 @@ function _vagrant_box_names {
 
 function _vagrant_box_latest {
 	local -r box_name="$1"
+	local -r provider="$2"
 
 	vagrant box list \
 		| tr -s ' ' \
 		| tr -d '(),' \
+		| awk "\$2 == \"${provider}\"" \
 		| _vagrant_version_sort \
 		| awk '!_[$1]++' \
 		| grep "${box_name}" \
@@ -129,11 +146,13 @@ function _vagrant_box_latest {
 
 function _vagrant_box_outdated {
 	local -r box="$1"
-	local -r latest="$(_vagrant_box_latest "${box}")"
+	local -r provider="$2"
+	local -r latest="$(_vagrant_box_latest "${box}" "${provider}")"
 
 	vagrant box list \
 		| tr -s ' ' \
 		| tr -d '(),' \
+		| awk "\$2 == \"${provider}\"" \
 		| _vagrant_version_sort \
 		| grep "${box}" \
 		| cut -d' ' -f3 \
