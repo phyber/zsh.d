@@ -32,7 +32,11 @@ function vakill {
 }
 
 function varb {
-	vagrant snap rollback $@
+	vagrant snapshot \
+		pop \
+		--no-provision \
+		--no-delete \
+		$@
 }
 
 function vash {
