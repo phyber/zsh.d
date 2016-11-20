@@ -4,6 +4,7 @@ HISTIGNORE='man:run-help'
 typeset -gT HISTIGNORE histignore # Tied array for easily checking HISTIGNORE
 
 # Handle some Linux/BSD differences here.
+# # ;& in the case enables fallthrough.
 case "$OSTYPE" in
 	linux*)
 		LS_OPTIONS='-F --group-directories-first'
@@ -17,7 +18,11 @@ case "$OSTYPE" in
 		# Fix help.
 		unalias run-help
 		autoload run-help
-
+		;&
+	freebsd*)
+		export RUBY_CONFIGURE_OPTS=--with-readline-dir=/usr/local
+		;;
+	darwin*)
 		# Executes a local install of ZSH if there is one, otherwise
 		# continues to use system zsh
 		_zshd_exec_usr_local_bin_zsh
