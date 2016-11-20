@@ -49,6 +49,7 @@ ZSHD_RBENV_DIR="${HOME}/.rbenv"
 # rbenv plugins
 ZSHD_RBENV_PLUGINS=(
 	rbenv/ruby-build
+	rbenv/rbenv-default-gems
 	rbenv/rbenv-gem-rehash
 	rkh/rbenv-update
 )
