@@ -171,7 +171,8 @@ function _vagrant_version_sort {
 			# 0.2.20, 0.2.13, a.b.cc
 			# Will break if fields a or b become more than single
 			# digit
-			sort -k3.1,1nr -k3.3,3nr -k3.5nr
+			# Needs to know what the field separator is.
+			sort -t" " -k3.1,1nr -k3.3,3nr -k3.5nr
 			;;
 		*)
 			# Assume fancy sort by default
