@@ -82,18 +82,7 @@ function vaub {
 
 # Vagrant remove outdated.
 function varo {
-	local box
-	while read -u 3 box; do
-		local provider=''
-		while read -u 5 provider; do
-			local old=''
-			while read -u 4 old; do
-				if ! _vagrant_box_remove "${box}" "${old}" "${provider}"; then
-					print -u 2 "Problem removing outdated box: ${box} -> ${old}"
-				fi
-			done 4< <(_vagrant_box_outdated "${box}" "${provider}")
-		done 5< <(_vagrant_box_providers "${box}")
-	done 3< <(_vagrant_box_names)
+	vagrant box prune $@
 }
 
 function _vagrant_box_update {
@@ -102,17 +91,6 @@ function _vagrant_box_update {
 
 	vagrant box update \
 		--box "${box}" \
-		--provider "${provider}"
-}
-
-function _vagrant_box_remove {
-	local -r box="$1"
-	local -r version="$2"
-	local -r provider="$3"
-
-	vagrant box remove \
-		"${box}" \
-		--box-version "${version}" \
 		--provider "${provider}"
 }
 
