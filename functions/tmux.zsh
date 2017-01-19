@@ -9,6 +9,13 @@ function _zshd_tmux_within {
 	[ -n "$TMUX" ]
 }
 
+# Gets the pane sizes appropriate for use in tsw.
+function _zshd_tmux_pane_size {
+    tmux list-panes \
+        -F "#{pane_active} #{pane_width} #{pane_height}" \
+        | awk '{ if ($1 == 1) { print int($2/2)" "$3; } }'
+}
+
 # tmux attach-session
 function ta {
 	_zshd_check_cmd "tmux" || return $?
@@ -110,9 +117,7 @@ function tsw {
 	readonly cmd
 
 	local -a ps
-	ps=($(tmux list-panes -F "#{pane_active} #{pane_width} #{pane_height}" \
-		| awk '{ if ($1 == 1) { print int($2/2)" "$3; } }'
-		))
+    ps=($(_zshd_tmux_pane_size))
 	readonly ps
 
 	# Width is halved in the awk command above, height not touched.
