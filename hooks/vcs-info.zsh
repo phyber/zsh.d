@@ -2,8 +2,8 @@
 autoload -Uz add-zsh-hook
 autoload -Uz vcs_info
 
-# Enable VCS Info for git and mercurial.
-zstyle ':vcs_info:*' enable git hg
+# Enable VCS Info for git and subversion.
+zstyle ':vcs_info:*' enable git svn
 
 # Git options
 zstyle ':vcs_info:git*' get-revision true
