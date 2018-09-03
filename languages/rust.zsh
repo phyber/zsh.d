@@ -1,6 +1,5 @@
 # Rust
 
-# Attempts to source the env from the default Rustup location.
-if [ -f "${HOME}/.cargo/env" ]; then
-    source "${HOME}/.cargo/env"
-fi
+# Unconditionally add this to PATH, anticipating that we're always going to
+# install cargo.
+export PATH="${HOME}/.cargo/bin:${PATH}"
