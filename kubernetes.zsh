@@ -1,6 +1,6 @@
 # Kubernetes
 
 # kubectl completions
-if _zshd_check_cmd "kubectl" 2>/dev/null; then
+if (( $+commands[kubectl] )); then
     source <(kubectl completion zsh)
 fi
