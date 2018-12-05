@@ -1,31 +1,117 @@
 # vim:ft=zsh:
 # Interact with nmcli to establish/teardown VPN connections
 
+# Fetch the password for the VPN domain from keepass
+function _vpn_keepass_password {
+    # We strip everything after (and including) the first / in the
+    # connection_name to get our keepass entry name.
+    local connection_name="$1"
+
+    # If a keepass database isn't set, just return
+    if [ -z "${VPN_KEEPASS_DATABASE}" ]; then
+        return 1
+    fi
+
+    # Read the keepass database password
+    local kdb_password
+    read -s kdb_password?"KeePass Password: "
+
+    # Get the password
+    keepassxc-cli show \
+        --attributes Password \
+        "${VPN_KEEPASS_DATABASE}" \
+        "${connection_name%%/*}" \
+        <<< "${kdb_password}" \
+        | grep -v ^Insert
+}
+
+# Get the VPN password somehow
+# First try via KeePass, then just ask for it.
+function _vpn_password {
+    local connection_name="$1"
+    local ret=1
+    local vpn_password
+
+    if [ -n "${VPN_KEEPASS_DATABASE}" ]; then
+        vpn_password="$(_vpn_keepass_password "${connection_name}")"
+        ret=$status
+    else
+        read -s vpn_password?"VPN Password: "
+        ret=$status
+    fi
+
+    echo "${vpn_password}"
+    return $ret
+}
+
+# Read a 2FA token if needed
+function _vpn_2fa {
+    local connection_name="$1"
+
+    # Check if the connection_name is listed in VPN_2FA_ENABLED
+    if grep -q "${connection_name%%/*}" <<<"${VPN_2FA_ENABLED}"; then
+        local code
+        read code?"2FA Code: "
+
+        echo "${code}"
+    fi
+}
+
+# Establish a VPN connection
 function _vpn_action_up {
     local connection_name="$1"
 
-    nmcli -ask connection up "${connection_name}"
+    # Attempt to get connection password
+    local vpn_password
+    vpn_password="$(_vpn_password "${connection_name}")"
+
+    # Return if we failed to get a password
+    if [ $status -ne 0 ]; then
+        print -u 2 "Could not get VPN password, aborting."
+        return 1
+    fi
+
+    # Blank line before we ask for more input.
+    echo ""
+
+    # Get a 2FA code if needed. Will be an empty string if not needed.
+    local code="$(_vpn_2fa "${connection_name}")"
+    if [ -n "${code}" ]; then
+        echo ""
+    fi
+
+    # Password concatenated with any 2FA code to throw at nmcli
+    local passwd="${vpn_password}${code}"
+
+    nmcli -ask \
+        connection up "${connection_name}" \
+        <<<"${passwd}"
 }
 
+# Tear down a VPN connection
 function _vpn_action_down {
     local connection_name="$1"
 
     nmcli connection down "${connection_name}"
 }
 
+# Show vpn command usage
 function _vpn_usage {
     print -u 2 "Usage: vpn <up|down> <VPN>"
 }
 
+# vpn command entry point.
 function vpn {
     local action="$1"
     local connection_name="$2"
 
+    # If we didn't get a connection_name show usage and return.
     if [ -z "${connection_name}" ]; then
         _vpn_usage
         return 1
     fi
 
+    # Execute action or show usage
     case "${action}" in
         up)
             _vpn_action_up "${connection_name}"

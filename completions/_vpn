@@ -10,19 +10,25 @@ local commands=(
     'down:Tear down a VPN connection'
 )
 
+# List inactive VPN connections.
 function _vpn_list_inactive {
+    # Get a list of active connections, so that we can exclude them from the
+    # inactive list.
     local active="$(_vpn_list_active)"
 
     if [ -n "${active}" ]; then
+        # We found active connections, remove them from the list.
         nmcli connection show \
             | awk '$3 == "vpn" { print $1 }' \
             | grep -v "${active}"
     else
+        # No active connections, just show the whole list.
         nmcli connection show \
             | awk '$3 == "vpn" { print $1 }'
     fi
 }
 
+# List active VPN connections.
 function _vpn_list_active {
     nmcli connection show --active \
         | awk '$3 == "vpn" { print $1 }'
