@@ -75,15 +75,3 @@ function gitrmb {
 	_zshd_git_delete_local_branch "${branch_name}"
 	_zshd_git_delete_remote_branch "${remote}" "${branch_name}"
 }
-
-# gitcd: Change directory to the top of the current git repo.
-function gitcd {
-	if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-		print -u 2 "Current directory is not a git repository."
-		return 1
-	fi
-
-	# If we're at the top level, this will become `cd ""` which
-	# will not change the current directory.
-	cd "$(git rev-parse --show-cdup)"
-}
