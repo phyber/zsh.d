@@ -1,5 +1,23 @@
 # vim:ft=zsh:
 # Interact with nmcli to establish/teardown VPN connections
+# This script is also capable of retrieving VPN passwords from KeePass and
+# prompting for 2FA codes as needed.
+#
+# To enable KeePass functionality, a VPN_KEEPASS_DATABASE environment variable
+# should point to the keepass database that you wish to use.
+# If this variable exists, the script will attempt to retrieve a password from
+# the database using keepassxc-cli.
+# KeePass entries and VPN connection names are expected to be in a certain
+# format when using this feature.
+# For example, if you have an entry in the root KeePass directory called
+# "TheVPN", your VPN connection in NetworkManager could be called "TheVPN" or
+# "TheVPN/other/info". The script will split the string based on the slashes
+# and just attempt to get the password for "TheVPN" from KeePass.
+#
+# This script can also prompt for 2FA codes and use them in the old OpenVPN
+# style of simply concatenating the strings together. To enable this, set an
+# environment variable named VPN_2FA_ENABLED to a space separated strings of
+# VPN names that you wish to prompt for a 2FA code.
 
 # Fetch the password for the VPN domain from keepass
 function _vpn_keepass_password {
