@@ -1,0 +1,42 @@
+# vim:ft=zsh:
+# Interact with nmcli to establish/teardown VPN connections
+
+function _vpn_action_up {
+    local connection_name="$1"
+
+    nmcli -ask connection up "${connection_name}"
+}
+
+function _vpn_action_down {
+    local connection_name="$1"
+
+    nmcli connection down "${connection_name}"
+}
+
+function _vpn_usage {
+    print -u 2 "Usage: vpn <up|down> <VPN>"
+}
+
+function vpn {
+    local action="$1"
+    local connection_name="$2"
+
+    if [ -z "${connection_name}" ]; then
+        _vpn_usage
+        return 1
+    fi
+
+    case "${action}" in
+        up)
+            _vpn_action_up "${connection_name}"
+            ;;
+        down)
+            _vpn_action_down "${connection_name}"
+            ;;
+        *)
+            _vpn_usage
+            ;;
+    esac
+}
+
+vpn $@

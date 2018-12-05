@@ -1,0 +1,45 @@
+#compdef vpn
+# vim:ft=zsh:
+
+local curcontext="${curcontext}"
+local line
+local state
+
+local commands=(
+    'up:Establish a VPN connection'
+    'down:Tear down a VPN connection'
+)
+
+function _vpn_list_inactive {
+    local active="$(_vpn_list_active)"
+
+    if [ -n "${active}" ]; then
+        nmcli connection show \
+            | awk '$3 == "vpn" { print $1 }' \
+            | grep -v "${active}"
+    else
+        nmcli connection show \
+            | awk '$3 == "vpn" { print $1 }'
+    fi
+}
+
+function _vpn_list_active {
+    nmcli connection show --active \
+        | awk '$3 == "vpn" { print $1 }'
+}
+
+_arguments -C \
+    "1: :{_describe 'command' commands}" \
+    "*:: :->vpn"
+
+case $state in
+    vpn)
+        case "${line[1]}" in
+            up)
+                compadd "$@" "${(uonzf)$(_vpn_list_inactive)}"
+                ;;
+            down)
+                compadd "$@" "${(uonzf)$(_vpn_list_active)}"
+                ;;
+        esac
+esac
