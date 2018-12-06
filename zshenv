@@ -36,6 +36,12 @@ typeset -U LD_LIBRARY_PATH
 typeset -U FPATH
 fpath+="${HOME}/.zsh.d/autoload"
 fpath+="${HOME}/.zsh.d/completions"
+function {
+    local f
+    for f in ${HOME}/.zsh.d/autoload/**/*(/); do
+        fpath+="${f}"
+    done
+}
 
 # Pager for the null command. READNULLCMD gets trashed on Debian by
 # /etc/zsh/zshrc which is read later. So we must set READNULLCMD through

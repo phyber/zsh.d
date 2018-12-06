@@ -11,16 +11,7 @@ autoload -Uz colors && colors
 source "${HOME}/.zsh.d/zsh_options"
 
 # Autoloading functions.
-function {
-    emulate -L zsh
-    setopt EXTENDED_GLOB
-    # Extended globbing allows us to use ~*~ to exclude files ending with
-    # *~ from the initial * glob.
-    local f
-    for f in ${HOME}/.zsh.d/autoload/*~*~; do
-        autoload -Uz ${f:t:r}
-    done
-}
+source "${HOME}/.zsh.d/autoload.zsh"
 
 # Load broken-out configuration.
 function {
