@@ -7,8 +7,13 @@
 # path.
 function _ptrhost_find_command {
     local -a dnstools
-    dnstools=("dig" "host")
+    dnstools=(
+        "drill"
+        "dig"
+        "host"
+    )
     typeset -r dnstools
+
     local tool
     local i
     for i in ${dnstools}; do
@@ -18,6 +23,7 @@ function _ptrhost_find_command {
             return 0
         fi
     done
+
     return 1
 }
 
@@ -33,6 +39,7 @@ function ptrhost {
     # :r removes the last octet from $ip since it isn't needed.
     local -a octet
     octet=("${(s/./)ip}")
+    typeset -r octet
 
     # Make sure that we have 3 components in the octet array.
     if [[ ${#octet} -lt 3 || ${#octet} -gt 4 ]]; then
