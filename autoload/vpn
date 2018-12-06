@@ -35,7 +35,7 @@ function _vpn_keepass_password {
     read -s kdb_password?"KeePass Password: "
 
     # Get the password
-    keepassxc-cli show \
+    command keepassxc-cli show \
         --attributes Password \
         "${VPN_KEEPASS_DATABASE}" \
         "${connection_name%%/*}" \
@@ -101,7 +101,7 @@ function _vpn_action_up {
     # Password concatenated with any 2FA code to throw at nmcli
     local passwd="${vpn_password}${code}"
 
-    nmcli -ask \
+    command nmcli -ask \
         connection up "${connection_name}" \
         <<<"${passwd}"
 }
@@ -110,7 +110,7 @@ function _vpn_action_up {
 function _vpn_action_down {
     local connection_name="$1"
 
-    nmcli connection down "${connection_name}"
+    command nmcli connection down "${connection_name}"
 }
 
 # Show vpn command usage
