@@ -6,48 +6,48 @@
 # _ptrhost_find_command finds the first available DNS tool and returns its
 # path.
 function _ptrhost_find_command {
-	local -a dnstools
-	dnstools=("dig" "host")
-	typeset -r dnstools
-	local tool
-	local i
-	for i in ${dnstools}; do
-		tool==${i}
-		if [[ $? == 0 ]]; then
-			echo "${tool}"
-			return 0
-		fi
-	done
-	return 1
+    local -a dnstools
+    dnstools=("dig" "host")
+    typeset -r dnstools
+    local tool
+    local i
+    for i in ${dnstools}; do
+        tool==${i}
+        if [[ $? == 0 ]]; then
+            echo "${tool}"
+            return 0
+        fi
+    done
+    return 1
 }
 
 function ptrhost {
-	local -r ip="$1"
+    local -r ip="$1"
 
-	# Make sure that an argument was actually given.
-	if [[ -z "${ip}" ]]; then
-		print -u 2 "Usage: $0 IP-ADDRESS"
-		return 1
-	fi
+    # Make sure that an argument was actually given.
+    if [[ -z "${ip}" ]]; then
+        print -u 2 "Usage: $0 IP-ADDRESS"
+        return 1
+    fi
 
-	# :r removes the last octet from $ip since it isn't needed.
-	local -a octet
-	octet=("${(s/./)ip}")
+    # :r removes the last octet from $ip since it isn't needed.
+    local -a octet
+    octet=("${(s/./)ip}")
 
-	# Make sure that we have 3 components in the octet array.
-	if [[ ${#octet} -lt 3 || ${#octet} -gt 4 ]]; then
-		print -u 2 "Invalid argument: '${ip}'"
-		return 1
-	fi
+    # Make sure that we have 3 components in the octet array.
+    if [[ ${#octet} -lt 3 || ${#octet} -gt 4 ]]; then
+        print -u 2 "Invalid argument: '${ip}'"
+        return 1
+    fi
 
-	local -r lookup="${octet[3]}.${octet[2]}.${octet[1]}.in-addr.arpa"
+    local -r lookup="${octet[3]}.${octet[2]}.${octet[1]}.in-addr.arpa"
 
-	local -r cmd=$(_ptrhost_find_command)
-	if [[ $? != 0 ]]; then
-		return 1
-	fi
+    local -r cmd=$(_ptrhost_find_command)
+    if [[ $? != 0 ]]; then
+        return 1
+    fi
 
-	$cmd -t NS "${lookup}"
+    $cmd -t NS "${lookup}"
 }
 
 ptrhost $@
