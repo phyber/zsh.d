@@ -113,9 +113,21 @@ function _vpn_action_down {
     command nmcli connection down "${connection_name}"
 }
 
+# Get a list of active VPNs
+function _vpn_list_active {
+    command nmcli connection show --active \
+        | awk '$3 == "vpn" {print $1}'
+}
+
+# Show currently active VPNs
+function _vpn_action_status {
+    _vpn_list_active
+}
+
 # Show vpn command usage
 function _vpn_usage {
     print -u 2 "Usage: vpn <up|down> <VPN>"
+    print -u 2 "       vpn status"
 }
 
 # vpn command entry point.
@@ -124,7 +136,7 @@ function vpn {
     local connection_name="$2"
 
     # If we didn't get a connection_name show usage and return.
-    if [ -z "${connection_name}" ]; then
+    if [ "${action}" != "status" ] && [ -z "${connection_name}" ]; then
         _vpn_usage
         return 1
     fi
@@ -136,6 +148,9 @@ function vpn {
             ;;
         down)
             _vpn_action_down "${connection_name}"
+            ;;
+        status)
+            _vpn_action_status
             ;;
         *)
             _vpn_usage
