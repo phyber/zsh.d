@@ -7,6 +7,7 @@ local state
 
 local commands=(
     'down:Tear down a VPN connection'
+    'edit:Edit a VPN definition'
     'show:Show VPN definition'
     'up:Establish a VPN connection'
 )
@@ -49,6 +50,9 @@ case $state in
         case "${line[1]}" in
             down)
                 compadd "$@" "${(uonzf)$(_vpn_list_active)}"
+                ;;
+            edit)
+                compadd "$@" "${(uonzf)$(_vpn_list_all)}"
                 ;;
             show)
                 compadd "$@" "${(uonzf)$(_vpn_list_all)}"

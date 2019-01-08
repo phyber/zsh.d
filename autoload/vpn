@@ -113,10 +113,11 @@ function _vpn_action_down {
     command nmcli connection down "${connection_name}"
 }
 
-# Get a list of active VPNs
-function _vpn_list_active {
-    command nmcli connection show --active \
-        | awk '$3 == "vpn" {print $1}'
+# Edit a VPN definition
+function _vpn_action_edit {
+    local connection_name="$1"
+
+    command nmcli connection edit "${connection_name}"
 }
 
 # Show definition of given VPN
@@ -124,6 +125,12 @@ function _vpn_action_show {
     local connection_name="$1"
 
     command nmcli connection export "${connection_name}"
+}
+
+# Get a list of active VPNs
+function _vpn_list_active {
+    command nmcli connection show --active \
+        | awk '$3 == "vpn" {print $1}'
 }
 
 # Show currently active VPNs
@@ -134,7 +141,8 @@ function _vpn_action_status {
 # Show vpn command usage
 function _vpn_usage {
     print -u 2 "Usage: vpn <up|down> <VPN>  Establish or tear down VPN"
-    print -u 2 "       vpn show             Display VPN definition"
+    print -u 2 "       vpn show <VPN>       Display VPN definition"
+    print -u 2 "       vpn edit <VPN>       Edit VPN definition"
     print -u 2 "       vpn status           Show connected VPNs"
 }
 
@@ -158,6 +166,10 @@ function vpn {
         down)
             # Teardown a VPN
             _vpn_action_down "${connection_name}"
+            ;;
+        edit)
+            # Edit a VPN definition
+            _vpn_action_edit "${connection_name}"
             ;;
         show)
             # Show a VPN definition
