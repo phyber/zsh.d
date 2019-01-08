@@ -6,8 +6,9 @@ local line
 local state
 
 local commands=(
-    'up:Establish a VPN connection'
     'down:Tear down a VPN connection'
+    'show:Show VPN definition'
+    'up:Establish a VPN connection'
 )
 
 # List inactive VPN connections.
@@ -23,14 +24,19 @@ function _vpn_list_inactive {
             | grep -v "${active}"
     else
         # No active connections, just show the whole list.
-        command nmcli connection show \
-            | awk '$3 == "vpn" { print $1 }'
+        _vpn_list_all
     fi
 }
 
 # List active VPN connections.
 function _vpn_list_active {
     command nmcli connection show --active \
+        | awk '$3 == "vpn" { print $1 }'
+}
+
+# List all VPN connections
+function _vpn_list_all {
+    command nmcli connection show \
         | awk '$3 == "vpn" { print $1 }'
 }
 
@@ -41,11 +47,14 @@ _arguments -C \
 case $state in
     vpn)
         case "${line[1]}" in
-            up)
-                compadd "$@" "${(uonzf)$(_vpn_list_inactive)}"
-                ;;
             down)
                 compadd "$@" "${(uonzf)$(_vpn_list_active)}"
+                ;;
+            show)
+                compadd "$@" "${(uonzf)$(_vpn_list_all)}"
+                ;;
+            up)
+                compadd "$@" "${(uonzf)$(_vpn_list_inactive)}"
                 ;;
         esac
 esac
