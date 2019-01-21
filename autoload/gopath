@@ -1,0 +1,21 @@
+# vim:ft=zsh:
+# gopath: Change directory to the $GOPATH.
+# The Go binary is used to retrieve the GOPATH, so that we get the Go default
+# if the user hasn't set a GOPATH.
+function gopath {
+    if ! (( $+commands[go] )); then
+        print -u 2 "go binary not found."
+        return 1
+    fi
+
+    local path="$(go env GOPATH)"
+
+    if [ ! -d "${path}" ]; then
+        print -u 2 "GOPATH not found or is not a directory."
+        return 1
+    fi
+
+    cd "${path}"
+}
+
+gopath $@
