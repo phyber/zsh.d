@@ -20,8 +20,7 @@ function _vpn_list_inactive {
 
     if [ -n "${active}" ]; then
         # We found active connections, remove them from the list.
-        command nmcli connection show \
-            | awk '$3 == "vpn" { print $1 }' \
+        _vpn_list_all \
             | grep -v "${active}"
     else
         # No active connections, just show the whole list.
