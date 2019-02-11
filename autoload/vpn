@@ -40,7 +40,7 @@ function _vpn_keepass_password {
         "${VPN_KEEPASS_DATABASE}" \
         "${connection_name%%/*}" \
         <<< "${kdb_password}" \
-        | grep -v ^Insert
+        | tail -1
 }
 
 # Get the VPN password somehow

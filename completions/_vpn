@@ -9,6 +9,7 @@ local commands=(
     'down:Tear down a VPN connection'
     'edit:Edit a VPN definition'
     'show:Show VPN definition'
+    'status:Show connected VPNs'
     'up:Establish a VPN connection'
 )
 
