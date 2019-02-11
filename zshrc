@@ -10,9 +10,6 @@ autoload -Uz colors && colors
 ####
 source "${HOME}/.zsh.d/zsh_options"
 
-# Autoloading functions.
-source "${HOME}/.zsh.d/autoload.zsh"
-
 # Load broken-out configuration.
 function {
     if [[ -d "${HOME}/.zsh.d" ]]; then
