@@ -89,8 +89,9 @@ function _vpn_action_up {
         return 1
     fi
 
-    # Blank line before we ask for more input.
-    echo ""
+    # A check mark if we successfully got a password. Providing some positive
+    # feedback quickly as the VPN connection part could take a moment.
+    echo "✔️"
 
     # Get a 2FA code if needed. Will be an empty string if not needed.
     local code="$(_vpn_2fa "${connection_name}")"
