@@ -40,6 +40,7 @@ function _vpn_keepass_password {
         "${VPN_KEEPASS_DATABASE}" \
         "${connection_name%%/*}" \
         <<< "${kdb_password}" \
+        2>/dev/null \
         | tail -1
 }
 
@@ -85,6 +86,7 @@ function _vpn_action_up {
 
     # Return if we failed to get a password
     if [ $status -ne 0 ]; then
+        echo "❌"
         print -u 2 "Could not get VPN password, aborting."
         return 1
     fi
