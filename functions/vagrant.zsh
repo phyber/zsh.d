@@ -32,11 +32,22 @@ function vakill {
 }
 
 function varb {
-	vagrant snapshot \
-		pop \
-		--no-provision \
-		--no-delete \
-		$@
+    case "${OSTYPE}" in
+        darwin*)
+            # VirtualBox on Darwin
+            vagrant snapshot \
+                pop \
+                --no-provision \
+                --no-delete \
+                $@
+            ;;
+        linux*)
+            # libvirt on Linux
+            vagrant sandbox rollback $@
+            ;;
+        *)
+            ;;
+    esac
 }
 
 function vash {
