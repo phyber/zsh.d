@@ -132,8 +132,8 @@ function _vpn_action_show {
 
 # Get a list of active VPNs
 function _vpn_list_active {
-    command nmcli connection show --active \
-        | awk '$3 == "vpn" {print $1}'
+    command nmcli -terse connection show --active \
+        | awk -F ":" '$3 == "vpn" {print $1}'
 }
 
 # Show currently active VPNs
@@ -162,7 +162,7 @@ function vpn {
 
     # Execute action or show usage
     case "${action}" in
-        up)
+        up|u)
             # Bring a VPN up
             _vpn_action_up "${connection_name}"
             ;;

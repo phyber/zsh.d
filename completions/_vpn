@@ -31,14 +31,14 @@ function _vpn_list_inactive {
 
 # List active VPN connections.
 function _vpn_list_active {
-    command nmcli connection show --active \
-        | awk '$3 == "vpn" { print $1 }'
+    command nmcli -terse connection show --active \
+        | awk -F ":" '$3 == "vpn" { print $1 }'
 }
 
 # List all VPN connections
 function _vpn_list_all {
-    command nmcli connection show \
-        | awk '$3 == "vpn" { print $1 }'
+    command nmcli -terse connection show \
+        | awk -F ":" '$3 == "vpn" { print $1 }'
 }
 
 _arguments -C \
