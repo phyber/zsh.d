@@ -91,7 +91,31 @@ function vaub {
     done 3< <(_vagrant_box_names)
 }
 
+# Removes a given box from libvirt
+function _libvirt_remove_box {
+
+}
+
+# Removes outdated boxes from libvirt
+function _varo_libvirt {
+    local box
+    while read -u 3 box; do
+        local provider=''
+        while read -u 4 provider; do
+            if [ "${provider}" != "libvirt" ]; then
+                continue
+            fi
+
+            local outdated=''
+            while read -u 5 outdated; do
+                
+            done 5< <(_vagrant_box_outdated "${box}" "${provider}")
+        done 4< <(_vagrant_box_providers "${box}")
+    done 3< <(_vagrant_box_names)
+}
+
 # Vagrant remove outdated.
+# If we're on Linux, we're using libvirt.
 function varo {
     vagrant box prune $@
 }
