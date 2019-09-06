@@ -1,0 +1,158 @@
+# vim:ft=zsh:
+# This script runs an `aws-vault login` for the given profile and launches it
+# in a Firefox container. It uses the "Open external links in a container"
+# add-on to do this.
+#
+# aws-vault: https://github.com/99designs/aws-vault
+# Firefox addon: https://addons.mozilla.org/en-GB/firefox/addon/open-url-in-container/
+
+# Available colours in Firefox containers
+_avl_colours=(
+    blue
+    green
+    orange
+    pink
+    purple
+    red
+    turquiose
+    yellow
+)
+
+# Available icons in Firefox containers
+_avl_icons=(
+    briefcase
+    cart
+    chill
+    circle
+    dollar
+    fingerprint
+    food
+    fruit
+    gift
+    pet
+    tree
+    vacation
+)
+
+# The extension URL pattern for launching the container
+_avl_ext_url="ext+container:name=%s&color=%s&icon=%s&url=%s"
+
+# Hashes a string
+function _avl_hash_string {
+    local -r profile="$1"
+
+    case "$OSTYPE" in
+        freebsd*)
+            echo -n "${profile}" \
+                | sha512
+            ;;
+        linux*)
+            echo -n "${profile}" \
+                | sha512sum \
+                | awk '{ print $1 }'
+            ;;
+        *)
+            # Perl is probably installed everywhere, try falling back to that.
+            echo -n "${profile}" \
+                | shasum -a 512 \
+                | awk '{ print $1 }'
+            ;;
+    esac
+}
+
+# Fetch the login URL from aws-vault. We need some error handling here.
+function _avl_get_login_url {
+    aws-vault login \
+        --stdout \
+        $@
+}
+
+# Encode the URL. This is currently naive and we should do a better job.
+function _avl_encode_url {
+    local -r url="$1"
+    local -r encoded_url="${url//&/%26}"
+
+    echo -n "${encoded_url}"
+}
+
+# Truncate a hash and mask it do the desired bit mask
+function _avl_truncate_hash {
+    local -r hashed="$1"
+    local -r mask="$2"
+
+    # Truncate the incoming hash, as ZSH can't handle huge numbers
+    local -r truncated_hash="${hashed[0,10]}"
+
+    # Turn the truncated hash back into an integer
+    local -r hash_int="$(print $(( 0x${truncated_hash} )))"
+
+    # Apply the mask
+    local -r masked="$(( ${hash_int}&${mask} ))"
+
+    # Return the integer value of the masked hash int.
+    printf "%d" "${masked}"
+}
+
+# Select a colour based on the hashed profile name
+function _avl_colour {
+    local -r hashed_profile="$1"
+
+    local -r colours_length="${#_avl_colours}"
+    local -r mask="0b1111111100000000"
+    local -r selector="$(_avl_truncate_hash "${hashed_profile}" "${mask}")"
+    local -r shifted="$(( ${selector} >> 8 ))"
+    local -r selected="$(( (${shifted} % ${colours_length}) + 1))"
+
+    echo -n "${_avl_colours[${selected}]}"
+}
+
+# Select an icon based on the hashed profile name
+function _avl_icon {
+    local -r hashed_profile="$1"
+
+    local -r icons_length="${#_avl_icons}"
+    local -r mask="0b11111111"
+    local -r selector="$(_avl_truncate_hash "${hashed_profile}" "${mask}")"
+    local -r selected="$(( (${selector} % ${icons_length}) + 1))"
+
+    echo -n "${_avl_icons[${selected}]}"
+}
+
+# Launch Firefox after building up the extension URL
+function _avl_launch_firefox {
+    local -r name="$1"
+    local -r colour="$2"
+    local -r icon="$3"
+    local -r url="$4"
+    local -r ext="$(printf "${_avl_ext_url}" ${name} ${colour} ${icon} ${url})"
+
+    firefox "${ext}"
+}
+
+# Main function
+function avl {
+    # Take the profile out of the arg list
+    local -r profile="${@[-1]}"
+
+    # Get the login URL
+    local url="$(_avl_get_login_url $@)"
+    if [ $? != 0 ]; then
+        print -u 2 "Error while obtaining login URL"
+        return 1
+    fi
+
+    # We have to encode the URL before using it.
+    local -r encoded_url="$(_avl_encode_url "${url}")"
+
+    # Hash the profile name, this is used for colour and icon selection
+    local -r hashed_profile="$(_avl_hash_string "${profile}")"
+
+    # Select the colour and icon to give the tab
+    local -r colour="$(_avl_colour "${hashed_profile}")"
+    local -r icon="$(_avl_icon "${hashed_profile}")"
+
+    # Finally call Firefox and open the profile in an appropriate container.
+    _avl_launch_firefox "${profile}" "${colour}" "${icon}" "${encoded_url}"
+}
+
+avl $@
