@@ -3,6 +3,22 @@
 # in a Firefox container. It uses the "Open external links in a container"
 # add-on to do this.
 #
+# The script will assign a colour and icon to the container tab based on the
+# profile name.
+# After a container tab is opened by this script, Firefox will remember the
+# assigned colour and icon. The script cannot override the colours or icons
+# that Firefox remembers.
+#
+# This means that if additional colours and icons were added to this script, or
+# the formula to select colours and icons were to change, that Firefox would
+# still display the old colour and icon when opening the tab.
+# To get the new colour and icon, you would have to delete the container tab
+# from the Firefox container tab settings.
+#
+# Script arguments should follow the same format as the help given by aws-vault
+# at `aws-vault login --help`. Importantly, the profile name must always be the
+# last argument given.
+#
 # aws-vault: https://github.com/99designs/aws-vault
 # Firefox addon: https://addons.mozilla.org/en-GB/firefox/addon/open-url-in-container/
 
@@ -65,6 +81,17 @@ function _avl_get_login_url {
     aws-vault login \
         --stdout \
         $@
+}
+
+# Check that the requested profile exists
+function _avl_profile_exists {
+    local -r profile="$1"
+
+    local -r script="$(printf '($1 == "%s") { print $1 }' "${profile}")"
+
+    aws-vault list \
+        | awk "${script}" \
+        | grep -q "${profile}"
 }
 
 # Encode the URL. This is currently naive and we should do a better job.
@@ -134,18 +161,36 @@ function avl {
     # Take the profile out of the arg list
     local -r profile="${@[-1]}"
 
-    # Get the login URL
-    local url="$(_avl_get_login_url $@)"
-    if [ $? != 0 ]; then
-        print -u 2 "Error while obtaining login URL"
+    # Check that the profile exists
+    _avl_profile_exists "${profile}"
+    if [ $status -ne 0 ]; then
+        print -u 2 "Profile '${profile}' doesn't exist"
         return 1
     fi
+
+    # Get the login URL
+    # In the event of an error, $url will contain the error message because
+    # aws-vault prints those to stdout
+    local url
+    url="$(_avl_get_login_url $@)"
+    if [ $status -ne 0 ]; then
+        print -u 2 "Error while obtaining login URL."
+        print -u 2 "${url}"
+        return 1
+    fi
+    readonly url
 
     # We have to encode the URL before using it.
     local -r encoded_url="$(_avl_encode_url "${url}")"
 
     # Hash the profile name, this is used for colour and icon selection
-    local -r hashed_profile="$(_avl_hash_string "${profile}")"
+    local hashed_profile
+    hashed_profile="$(_avl_hash_string "${profile}")"
+    if [ $status -ne 0 ]; then
+        print -u 2 "Couldn't hash profile name. Missing shasum executables?"
+        return 1
+    fi
+    readonly hashed_profile
 
     # Select the colour and icon to give the tab
     local -r colour="$(_avl_colour "${hashed_profile}")"
