@@ -2,7 +2,7 @@
 
 _vault_profiles() {
     local -a profiles
-    IFS=$'\n'
+    local IFS=$'\n'
     profiles=($(aws-vault list --profiles))
     _describe 'PROFILE' profiles
 }
