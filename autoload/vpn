@@ -25,6 +25,11 @@ function _vpn_keepass_password {
     # connection_name to get our keepass entry name.
     local connection_name="$1"
 
+    # If there is no password for the VPN, echo nothing and return success.
+    if ! _vpn_has_password "${connection_name}"; then
+        return 0
+    fi
+
     # If a keepass database isn't set, just return
     if [ -z "${VPN_KEEPASS_DATABASE}" ]; then
         return 1
@@ -42,6 +47,19 @@ function _vpn_keepass_password {
         <<< "${kdb_password}" \
         2>/dev/null \
         | tail -1
+}
+
+# Some VPNs might not be password protected.
+# We keep an environment variable VPN_NO_PASSWORD to indicate these.
+# Returns a boolean indicating such.
+function _vpn_has_password {
+    local connection_name="$1"
+
+    if grep -q "${connection_name%%/*}" <<<"${VPN_NO_PASSWORD}"; then
+        return 1
+    fi
+
+    return 0
 }
 
 # Get the VPN password somehow
