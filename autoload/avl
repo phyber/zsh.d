@@ -153,7 +153,14 @@ function _avl_launch_firefox {
     local -r url="$4"
     local -r ext="$(printf "${_avl_ext_url}" ${name} ${colour} ${icon} ${url})"
 
-    firefox "${ext}"
+    case "$OSTYPE" in
+        darwin*)
+            /Applications/Firefox.app/Contents/MacOS/firefox "${ext}"
+            ;;
+        *)
+            firefox "${ext}"
+            ;;
+    esac
 }
 
 # Main function
