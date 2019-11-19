@@ -10,6 +10,23 @@ autoload -Uz colors && colors
 ####
 source "${HOME}/.zsh.d/zsh_options"
 
+
+## ZSH Prompt
+# Exit status of previous command
+PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)'
+# user@host
+PROMPT+='%{$fg_bold[green]%}%n@%m%{$reset_color%}'
+# VCS Info
+PROMPT+='${vcs_info_msg_0_}'
+# $ or # depending on shell privilege.
+PROMPT+='%(!.#.$) '
+
+# Selection prompt.
+PROMPT3='%{$fg[yellow]%}Selection%{$reset_color%}: '
+
+# Prompt on right shows CWD and vi key mode if we're using vi keybinds.
+RPROMPT='%{$fg_bold[blue]%}%~%{$reset_color%}$vi_key_mode'
+
 # Load broken-out configuration.
 function {
     if [[ -d "${HOME}/.zsh.d" ]]; then
