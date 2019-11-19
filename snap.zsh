@@ -1,3 +1,3 @@
 if [ -d /snap/bin ]; then
-    export PATH="/snap/bin:${PATH}"
+    _zsh_prepend_path "/snap/bin"
 fi
