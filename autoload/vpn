@@ -122,7 +122,10 @@ function _vpn_action_up {
     # Password concatenated with any 2FA code to throw at nmcli
     local passwd="${vpn_password}${code}"
 
-    command nmcli -ask \
+    command nmcli \
+        --ask \
+        --colors yes \
+        --pretty \
         connection up "${connection_name}" \
         <<<"${passwd}"
 }
