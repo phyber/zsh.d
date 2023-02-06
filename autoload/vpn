@@ -77,7 +77,7 @@ function _vpn_password {
         ret=$status
     fi
 
-    echo "${vpn_password}"
+    printf "%s\n" "${vpn_password}"
     return $ret
 }
 
@@ -90,7 +90,7 @@ function _vpn_2fa {
         local code
         read code?"2FA Code: "
 
-        echo "${code}"
+        printf "%s\n" "${code}"
     fi
 }
 
@@ -116,7 +116,7 @@ function _vpn_action_up {
     # Get a 2FA code if needed. Will be an empty string if not needed.
     local code="$(_vpn_2fa "${connection_name}")"
     if [ -n "${code}" ]; then
-        echo ""
+        printf "\n"
     fi
 
     # Password concatenated with any 2FA code to throw at nmcli
