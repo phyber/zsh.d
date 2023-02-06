@@ -59,17 +59,17 @@ function _avl_hash_string {
 
     case "$OSTYPE" in
         freebsd*)
-            echo -n "${profile}" \
+            printf "%s" "${profile}" \
                 | sha512
             ;;
         linux*)
-            echo -n "${profile}" \
+            printf "%s" "${profile}" \
                 | sha512sum \
                 | awk '{ print $1 }'
             ;;
         *)
             # Perl is probably installed everywhere, try falling back to that.
-            echo -n "${profile}" \
+            printf "%s" "${profile}" \
                 | shasum -a 512 \
                 | awk '{ print $1 }'
             ;;
@@ -99,7 +99,7 @@ function _avl_encode_url {
     local -r url="$1"
     local -r encoded_url="${url//&/%26}"
 
-    echo -n "${encoded_url}"
+    printf "%s" "${encoded_url}"
 }
 
 # Truncate a hash and mask it do the desired bit mask
@@ -130,7 +130,7 @@ function _avl_colour {
     local -r shifted="$(( ${selector} >> 8 ))"
     local -r selected="$(( (${shifted} % ${colours_length}) + 1))"
 
-    echo -n "${_avl_colours[${selected}]}"
+    printf "%s" "${_avl_colours[${selected}]}"
 }
 
 # Select an icon based on the hashed profile name
@@ -142,7 +142,7 @@ function _avl_icon {
     local -r selector="$(_avl_truncate_hash "${hashed_profile}" "${mask}")"
     local -r selected="$(( (${selector} % ${icons_length}) + 1))"
 
-    echo -n "${_avl_icons[${selected}]}"
+    printf "%s" "${_avl_icons[${selected}]}"
 }
 
 # Launch Firefox after building up the extension URL
