@@ -51,3 +51,7 @@ function {
 if (( $+commands[bpython] )); then
 	alias bpython='bpython -q'
 fi
+
+if [ -f "${HOME}/.poetry/env" ]; then
+    source "${HOME}/.poetry/env"
+fi
