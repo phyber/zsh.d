@@ -42,7 +42,7 @@ function _rmsshkey_getaddrs {
 		addrs+=($(_rmsshkey_getaddr_type "${rrtype}" "${hostname}"))
 	}
 	readonly addrs
-	echo ${addrs}
+	print ${addrs}
 	return 0
 }
 
@@ -65,7 +65,7 @@ function _rmsshkey_should_remove {
 	local REPLY
 	local answer
 
-	echo ""
+    printf "\n"
 	select answer in Yes No; do
 		if [[ -z "${answer}" ]]; then
 			answer="${REPLY}"
@@ -78,7 +78,7 @@ function _rmsshkey_should_remove {
 				return 1
 				;;
 			*)
-				echo "Invalid choice."
+				printf "%s\n" "Invalid choice."
 				;;
 		esac
 	done
@@ -125,11 +125,11 @@ function _rmsshkey_verbose {
 
 # Show rmsshkey usage information
 function _rmsshkey_usage {
-	echo "Usage: rmsshkey [-v] [-n] [-i] [-h] <hostname || IP>"
-	echo "   -v: Enable verbose output."
-	echo "   -i: Interactive mode, confirm each key deletion."
-	echo "   -n: Dry run, show what will happen but don't do it."
-	echo "   -h: Show this help"
+	printf "%s\n" "Usage: rmsshkey [-v] [-n] [-i] [-h] <hostname || IP>"
+	printf "%s\n" "   -v: Enable verbose output."
+	printf "%s\n" "   -i: Interactive mode, confirm each key deletion."
+	printf "%s\n" "   -n: Dry run, show what will happen but don't do it."
+	printf "%s\n" "   -h: Show this help"
 	return 1
 }
 
