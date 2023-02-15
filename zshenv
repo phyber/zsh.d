@@ -17,9 +17,15 @@ export PATH="${HOME}/.local/bin:${PATH}"
 typeset -T LD_LIBRARY_PATH ld_library_path
 typeset -U LD_LIBRARY_PATH
 
+# Configure search paths for functions
+# Ensure entries are unique
 typeset -U FPATH
+
+# Static fpaths
 fpath+="${HOME}/.zsh.d/autoload"
 fpath+="${HOME}/.zsh.d/completions"
+
+# Find all autoload fpath directories
 function {
     local f
     for f in ${HOME}/.zsh.d/autoload/**/*(/); do
