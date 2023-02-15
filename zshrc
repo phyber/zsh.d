@@ -10,7 +10,6 @@ autoload -Uz colors && colors
 ####
 source "${HOME}/.zsh.d/zsh_options"
 
-
 ## ZSH Prompt
 # Exit status of previous command
 PROMPT='%(0?,,%{$fg[red]%}%?%{$reset_color%}:)'
@@ -37,6 +36,8 @@ function {
         done
     fi
 }
+
+source "${HOME}/.zsh.d/zsh-syntax-highlighting"
 
 # Finally, look for a ~/.zsh_local which can contain private variables not
 # stored in Git.
