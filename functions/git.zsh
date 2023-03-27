@@ -75,3 +75,23 @@ function gitrmb {
 	_zshd_git_delete_local_branch "${branch_name}"
 	_zshd_git_delete_remote_branch "${remote}" "${branch_name}"
 }
+
+function git-list-merged-branches {
+    # We assume these are the possible names of main branches
+    local ignore_branches=(
+        main
+        master
+    )
+
+    # Join the above into a | separated list, used by grep
+    local ignored="${(j.|.)ignore_branches}"
+
+    git branch \
+        --no-color \
+        --merged \
+    | grep \
+        --extended-regexp \
+        --invert-match \
+        "^(\*|${ignored})" \
+    | awk '{ print $1 }'
+}
