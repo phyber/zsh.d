@@ -60,10 +60,16 @@ ZSHD_RBENV_PLUGINS=(
     rkh/rbenv-update
 )
 
-# Sometimes we might not have vim installed. Redirect error output.
+# Sometimes we might not have vim installed.
 if (( $+commands[vim] )); then
     export EDITOR==vim
 fi
+
+# We prefer neovim if it's available
+if (( $+commands[nvim] )); then
+    export EDITOR==nvim
+fi
+
 export LC_COLLATE='C'
 export LESS='-R'
 
