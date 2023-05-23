@@ -49,6 +49,7 @@ zstyle ':completion:*:processes' command 'ps ux'
 # Don't offer the same filename twice if it's already on the command line.
 zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
 
+# Enable AWS CLI completion if it's available
 if (( $+commands[aws_zsh_completer.sh] )); then
     source =aws_zsh_completer.sh
 fi
