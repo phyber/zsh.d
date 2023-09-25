@@ -89,6 +89,7 @@ function git-list-merged-branches {
     git branch \
         --no-color \
         --merged \
+    | sed 's/\s\+//' \
     | grep \
         --extended-regexp \
         --invert-match \
