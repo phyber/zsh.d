@@ -6,8 +6,8 @@ DIRSTACKSIZE=16
 
 ## ZSH history
 HISTFILE="${HOME}/.zsh_history"
-HISTSIZE=1000
-SAVEHIST=10000
+HISTSIZE=10000
+SAVEHIST=100000
 
 # Ensure that each entry in PATH is unique
 typeset -U PATH
