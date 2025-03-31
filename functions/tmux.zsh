@@ -61,7 +61,7 @@ function tn {
     local -r session_name="$1"
 
     if [ -z "${session_name}" ]; then
-        tmux new-session
+        tmux new-session -s "${(C)HOST}"
     else
         tmux new-session -s "${session_name}"
     fi
